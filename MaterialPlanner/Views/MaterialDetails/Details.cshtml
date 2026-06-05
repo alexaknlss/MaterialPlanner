@@ -1,0 +1,41 @@
+@model MaterialPlanner.Models.MaterialDetails
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Material Details</h1>
+
+<hr />
+
+<dl class="row">
+
+    <dt class="col-sm-3">Material</dt>
+    <dd class="col-sm-9">@Model.Material?.Description</dd>
+
+    <dt class="col-sm-3">Brand</dt>
+    <dd class="col-sm-9">@Model.Brand?.Name</dd>
+
+    <dt class="col-sm-3">Product</dt>
+    <dd class="col-sm-9">@Model.Product?.Description</dd>
+
+    <dt class="col-sm-3">Presentation</dt>
+    <dd class="col-sm-9">@Model.Presentation?.Name</dd>
+
+    <dt class="col-sm-3">Status</dt>
+    <dd class="col-sm-9">@Model.Status</dd>
+
+    <dt class="col-sm-3">Consumption</dt>
+    <dd class="col-sm-9">@Model.Construction</dd>
+
+</dl>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">
+        Edit
+    </a>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Back to List
+    </a>
+</div>

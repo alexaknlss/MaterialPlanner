@@ -18,4 +18,11 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Brands\" />
+    <Folder Include="Views\Materials\" />
+    <Folder Include="Views\MaterialDetails\" />
+    <Folder Include="Views\Products\" />
+  </ItemGroup>
+
 </Project>

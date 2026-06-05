@@ -1,0 +1,84 @@
+@model MaterialPlanner.Models.MaterialDetails
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create Material Detail</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Material -->
+            <div class="mb-3">
+                <label asp-for="MaterialId" class="form-label"></label>
+                <select asp-for="MaterialId"
+                        asp-items="ViewBag.MaterialId"
+                        class="form-select">
+                    <option value="">-- Select Material --</option>
+                </select>
+                <span asp-validation-for="MaterialId" class="text-danger"></span>
+            </div>
+
+            <!-- Brand -->
+            <div class="mb-3">
+                <label asp-for="BrandId" class="form-label"></label>
+                <select asp-for="BrandId"
+                        asp-items="ViewBag.BrandId"
+                        class="form-select">
+                    <option value="">-- Select Brand --</option>
+                </select>
+                <span asp-validation-for="BrandId" class="text-danger"></span>
+            </div>
+
+            <!-- Product -->
+            <div class="mb-3">
+                <label asp-for="ProductId" class="form-label"></label>
+                <select asp-for="ProductId"
+                        asp-items="ViewBag.ProductId"
+                        class="form-select">
+                    <option value="">-- Select Product --</option>
+                </select>
+                <span asp-validation-for="ProductId" class="text-danger"></span>
+            </div>
+
+            <!-- Presentation -->
+            <div class="mb-3">
+                <label asp-for="PresentationId" class="form-label"></label>
+                <select asp-for="PresentationId"
+                        asp-items="ViewBag.PresentationId"
+                        class="form-select">
+                    <option value="">-- Select Presentation --</option>
+                </select>
+                <span asp-validation-for="PresentationId" class="text-danger"></span>
+            </div>
+
+            <!-- Status -->
+            <div class="form-check mb-3">
+                <input asp-for="Status" class="form-check-input" />
+                <label asp-for="Status" class="form-check-label"></label>
+            </div>
+
+            <!-- Construction -->
+            <div class="mb-3">
+                <label asp-for="Construction" class="form-label">Consumption</label>
+                <input asp-for="Construction" class="form-control" />
+                <span asp-validation-for="Construction" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Save
+            </button>
+
+            <a asp-action="Index" class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </form>
+    </div>
+</div>
