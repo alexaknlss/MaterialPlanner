@@ -107,8 +107,19 @@ namespace MaterialPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+
+            var materialDetails = _context.MaterialDetails
+    .Where(md => md.ProductId == id);
+
+            _context.MaterialDetails.RemoveRange(materialDetails);
+
             var product = await _context.Products.FindAsync(id);
-            _context.Products.Remove(product);
+
+            if (product != null)
+            {
+                _context.Products.Remove(product);
+            }
+
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));

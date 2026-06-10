@@ -1,15 +1,14 @@
-﻿namespace MaterialPlanner.Models
-{
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
+namespace MaterialPlanner.Models
+{
     [Table("Brands")]
     public class Brands
     {
         [Key]
         public int Id { get; set; }
 
-       
         [Required(ErrorMessage = "The name is required.")]
         [Column(TypeName = "nvarchar(100)")]
         [MaxLength(100)]
