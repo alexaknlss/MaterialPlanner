@@ -1,0 +1,91 @@
+﻿@*
+    Navbar principal de MaterialPlanner
+*@
+
+<nav class="navbar navbar-dark bg-dark shadow-sm">
+    <div class="container-fluid">
+
+        <!-- Botón para abrir el menú lateral -->
+        <button class="btn btn-outline-light"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#sidebarMenu"
+                aria-controls="sidebarMenu">
+
+            ☰
+        </button>
+
+        <!-- Logo/Título -->
+        <a class="navbar-brand ms-2"
+           asp-controller="Home"
+           asp-action="Index">
+
+            MaterialPlanner
+
+        </a>
+
+    </div>
+</nav>
+
+<!-- Menú lateral -->
+<div class="offcanvas offcanvas-start"
+     tabindex="-1"
+     id="sidebarMenu"
+     aria-labelledby="sidebarMenuLabel">
+
+    <div class="offcanvas-header">
+
+        <h5 class="offcanvas-title"
+            id="sidebarMenuLabel">
+
+            MaterialPlanner
+
+        </h5>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close">
+        </button>
+
+    </div>
+
+    <div class="offcanvas-body">
+
+        <ul class="nav flex-column">
+
+            <li class="nav-item">
+                <a class="nav-link"
+                   asp-controller="Home"
+                   asp-action="Index">
+
+                    🏠 Inicio
+
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link"
+                   asp-controller="MaterialDetails"
+                   asp-action="Index">
+
+                    📦 Material Details
+
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link"
+                   asp-controller="Images"
+                   asp-action="Index">
+
+                    🖼️ Images
+
+                </a>
+            </li>
+
+        </ul>
+
+    </div>
+
+</div>

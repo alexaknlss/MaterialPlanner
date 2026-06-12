@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace MaterialPlanner.Models;
 
@@ -15,20 +13,53 @@ public partial class MaterialPlannerContext : DbContext
     {
     }
 
-    public virtual DbSet<Brands> Brands { get; set; }
-    public virtual DbSet<Presentation> Presentation { get; set; }
-    public virtual DbSet<Materials> Materials { get; set; }
-    public virtual DbSet<Products> Products { get; set; }
-    public virtual DbSet<MaterialDetails> MaterialDetails { get; set; } 
-
-
+    public DbSet<Brands> Brands { get; set; }
+    public DbSet<Presentation> Presentations { get; set; }
+    public DbSet<Materials> Materials { get; set; }
+    public DbSet<Products> Products { get; set; }
+    public DbSet<MaterialDetails> MaterialDetails { get; set; }
+    public DbSet<Image> Images { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=localhost;Database=MaterialPlanner;Trusted_Connection=True;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer(
+    "Server=.;Database=MaterialPlanner;Trusted_Connection=True;TrustServerCertificate=True"
+);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // 🖼️ IMAGES → MATERIALDETAILS (esto sí puede ser cascade)
+        modelBuilder.Entity<Image>()
+            .HasOne(i => i.MaterialDetails)
+            .WithMany(m => m.Images)
+            .HasForeignKey(i => i.MaterialDetailsId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // 🧩 RELACIONES SEGURAS (NO BORRAN MATERIALDETAILS)
+
+        modelBuilder.Entity<MaterialDetails>()
+            .HasOne(m => m.Brand)
+            .WithMany()
+            .HasForeignKey(m => m.BrandId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        modelBuilder.Entity<MaterialDetails>()
+            .HasOne(m => m.Product)
+            .WithMany()
+            .HasForeignKey(m => m.ProductId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        modelBuilder.Entity<MaterialDetails>()
+            .HasOne(m => m.Material)
+            .WithMany()
+            .HasForeignKey(m => m.MaterialId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        modelBuilder.Entity<MaterialDetails>()
+            .HasOne(m => m.Presentation)
+            .WithMany()
+            .HasForeignKey(m => m.PresentationId)
+            .OnDelete(DeleteBehavior.SetNull);
+
         OnModelCreatingPartial(modelBuilder);
     }
 

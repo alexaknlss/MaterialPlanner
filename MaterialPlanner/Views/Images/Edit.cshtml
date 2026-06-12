@@ -1,0 +1,49 @@
+﻿@model MaterialPlanner.Models.MaterialDetails
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit Material Detail</h2>
+
+<hr />
+
+<form asp-action="Edit">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group mb-2">
+        <label asp-for="MaterialId"></label>
+        <select asp-for="MaterialId" class="form-control" asp-items="ViewBag.MaterialId"></select>
+    </div>
+
+    <div class="form-group mb-2">
+        <label asp-for="BrandId"></label>
+        <select asp-for="BrandId" class="form-control" asp-items="ViewBag.BrandId"></select>
+    </div>
+
+    <div class="form-group mb-2">
+        <label asp-for="ProductId"></label>
+        <select asp-for="ProductId" class="form-control" asp-items="ViewBag.ProductId"></select>
+    </div>
+
+    <div class="form-group mb-2">
+        <label asp-for="PresentationId"></label>
+        <select asp-for="PresentationId" class="form-control" asp-items="ViewBag.PresentationId"></select>
+    </div>
+
+    <div class="form-group mb-2">
+        <label asp-for="Construction"></label>
+        <input asp-for="Construction" class="form-control" />
+    </div>
+
+    <div class="form-group form-check mb-3">
+        <input asp-for="Status" class="form-check-input" />
+        <label asp-for="Status" class="form-check-label"></label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+
+</form>

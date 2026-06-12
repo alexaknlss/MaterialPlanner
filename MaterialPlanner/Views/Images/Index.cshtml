@@ -1,0 +1,68 @@
+﻿@model IEnumerable<MaterialPlanner.Models.Image>
+
+@{
+    ViewData["Title"] = "Images";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Images</h2>
+
+        <a asp-action="Create" class="btn btn-primary">
+            + Upload New Image
+        </a>
+    </div>
+
+    <div class="row">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+
+                <div class="card shadow-sm">
+
+                    <!-- Imagen -->
+                    <img src="@item.Path"
+                         class="card-img-top"
+                         style="height: 220px; object-fit: cover;" />
+
+                    <div class="card-body">
+
+                        <!-- Descripción -->
+                        <h5 class="card-title">
+                            @item.Description
+                        </h5>
+
+                        <!-- Relación -->
+                        <p class="card-text">
+                            <strong>Material Detail ID:</strong> @item.MaterialDetailsId
+                        </p>
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between">
+
+                            <a asp-action="Details"
+                               asp-route-id="@item.Id"
+                               class="btn btn-sm btn-info text-white">
+                                Details
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@item.Id"
+                               class="btn btn-sm btn-danger">
+                                Delete
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</div>

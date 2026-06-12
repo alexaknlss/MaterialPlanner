@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MaterialPlanner.Migrations
 {
     [DbContext(typeof(MaterialPlannerContext))]
-    [Migration("20260602203229_AddForeignKeysToMaterialDetails")]
-    partial class AddForeignKeysToMaterialDetails
+    [Migration("20260610191506_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,12 +34,39 @@ namespace MaterialPlanner.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Brands");
+                });
+
+            modelBuilder.Entity("MaterialPlanner.Models.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("MaterialDetailsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(300)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaterialDetailsId");
+
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("MaterialPlanner.Models.MaterialDetails", b =>
@@ -50,19 +77,19 @@ namespace MaterialPlanner.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BrandId")
+                    b.Property<int?>("BrandId")
                         .HasColumnType("int");
 
                     b.Property<int>("Construction")
                         .HasColumnType("int");
 
-                    b.Property<int>("MaterialId")
+                    b.Property<int?>("MaterialId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PresentationId")
+                    b.Property<int?>("PresentationId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Status")
@@ -92,6 +119,11 @@ namespace MaterialPlanner.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ItemMaterial")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -140,31 +172,38 @@ namespace MaterialPlanner.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("MaterialPlanner.Models.Image", b =>
+                {
+                    b.HasOne("MaterialPlanner.Models.MaterialDetails", "MaterialDetails")
+                        .WithMany("Images")
+                        .HasForeignKey("MaterialDetailsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MaterialDetails");
+                });
+
             modelBuilder.Entity("MaterialPlanner.Models.MaterialDetails", b =>
                 {
                     b.HasOne("MaterialPlanner.Models.Brands", "Brand")
                         .WithMany()
                         .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("MaterialPlanner.Models.Materials", "Material")
                         .WithMany()
                         .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("MaterialPlanner.Models.Presentation", "Presentation")
                         .WithMany()
                         .HasForeignKey("PresentationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("MaterialPlanner.Models.Products", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Brand");
 
@@ -173,6 +212,11 @@ namespace MaterialPlanner.Migrations
                     b.Navigation("Presentation");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("MaterialPlanner.Models.MaterialDetails", b =>
+                {
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

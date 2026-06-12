@@ -21,7 +21,8 @@ namespace MaterialPlanner.Controllers
                 .Include(m => m.Material)
                 .Include(m => m.Brand)
                 .Include(m => m.Product)
-                .Include(m => m.Presentation);
+                .Include(m => m.Presentation)
+                .Include(m => m.Images); // 🆕 preparado para imágenes
 
             return View(await materialDetails.ToListAsync());
         }
@@ -37,6 +38,7 @@ namespace MaterialPlanner.Controllers
                 .Include(m => m.Brand)
                 .Include(m => m.Product)
                 .Include(m => m.Presentation)
+                .Include(m => m.Images)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (materialDetail == null)
@@ -49,25 +51,24 @@ namespace MaterialPlanner.Controllers
         public IActionResult Create()
         {
             LoadDropdowns();
-
             return View();
         }
 
+        // POST: MaterialDetails/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MaterialDetails materialDetail)
         {
-            // remover validación de navegaciones
             ModelState.Remove("Material");
             ModelState.Remove("Brand");
             ModelState.Remove("Product");
             ModelState.Remove("Presentation");
+            ModelState.Remove("Images");
 
             if (ModelState.IsValid)
             {
                 _context.MaterialDetails.Add(materialDetail);
                 await _context.SaveChangesAsync();
-
                 return RedirectToAction(nameof(Index));
             }
 
@@ -87,7 +88,6 @@ namespace MaterialPlanner.Controllers
                 return NotFound();
 
             LoadDropdowns();
-
             return View(materialDetail);
         }
 
@@ -99,25 +99,28 @@ namespace MaterialPlanner.Controllers
             if (id != materialDetail.Id)
                 return NotFound();
 
-            // 🔥 ignorar navegación para evitar ModelState inválido
             ModelState.Remove("Material");
             ModelState.Remove("Brand");
             ModelState.Remove("Product");
             ModelState.Remove("Presentation");
+            ModelState.Remove("Images");
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(materialDetail);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_context.MaterialDetails.Any(e => e.Id == materialDetail.Id))
-                        return NotFound();
-                    throw;
-                }
+                var existing = await _context.MaterialDetails
+                    .FirstOrDefaultAsync(m => m.Id == id);
+
+                if (existing == null)
+                    return NotFound();
+
+                existing.MaterialId = materialDetail.MaterialId;
+                existing.BrandId = materialDetail.BrandId;
+                existing.ProductId = materialDetail.ProductId;
+                existing.PresentationId = materialDetail.PresentationId;
+                existing.Status = materialDetail.Status;
+                existing.Construction = materialDetail.Construction;
+
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
@@ -137,6 +140,7 @@ namespace MaterialPlanner.Controllers
                 .Include(m => m.Brand)
                 .Include(m => m.Product)
                 .Include(m => m.Presentation)
+                .Include(m => m.Images)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (materialDetail == null)
@@ -150,7 +154,8 @@ namespace MaterialPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var materialDetail = await _context.MaterialDetails.FindAsync(id);
+            var materialDetail = await _context.MaterialDetails
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (materialDetail != null)
             {
@@ -163,25 +168,10 @@ namespace MaterialPlanner.Controllers
 
         private void LoadDropdowns()
         {
-            ViewBag.MaterialId = new SelectList(
-                _context.Materials,
-                "Id",
-                "Description");
-
-            ViewBag.BrandId = new SelectList(
-                _context.Brands,
-                "Id",
-                "Name");
-
-            ViewBag.ProductId = new SelectList(
-                _context.Products,
-                "Id",
-                "Description");
-
-            ViewBag.PresentationId = new SelectList(
-                _context.Presentation,
-                "Id",
-                "Name");
+            ViewBag.MaterialId = new SelectList(_context.Materials, "Id", "Description");
+            ViewBag.BrandId = new SelectList(_context.Brands, "Id", "Name");
+            ViewBag.ProductId = new SelectList(_context.Products, "Id", "Description");
+            ViewBag.PresentationId = new SelectList(_context.Presentations, "Id", "Name");
         }
     }
 }

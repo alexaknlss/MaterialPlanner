@@ -16,7 +16,7 @@ namespace MaterialPlanner.Controllers
         // GET: Presentations
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Presentation.ToListAsync());
+            return View(await _context.Presentations.ToListAsync());
         }
 
         // GET: Presentations/Details/5
@@ -24,7 +24,7 @@ namespace MaterialPlanner.Controllers
         {
             if (id == null) return NotFound();
 
-            var presentation = await _context.Presentation
+            var presentation = await _context.Presentations
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (presentation == null) return NotFound();
@@ -57,7 +57,7 @@ namespace MaterialPlanner.Controllers
         {
             if (id == null) return NotFound();
 
-            var presentation = await _context.Presentation.FindAsync(id);
+            var presentation = await _context.Presentations.FindAsync(id);
             if (presentation == null) return NotFound();
 
             return View(presentation);
@@ -79,7 +79,7 @@ namespace MaterialPlanner.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!_context.Presentation.Any(e => e.Id == presentation.Id))
+                    if (!_context.Presentations.Any(e => e.Id == presentation.Id))
                         return NotFound();
                     else
                         throw;
@@ -96,7 +96,7 @@ namespace MaterialPlanner.Controllers
         {
             if (id == null) return NotFound();
 
-            var presentation = await _context.Presentation
+            var presentation = await _context.Presentations
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (presentation == null) return NotFound();
@@ -109,8 +109,8 @@ namespace MaterialPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var presentation = await _context.Presentation.FindAsync(id);
-            _context.Presentation.Remove(presentation);
+            var presentation = await _context.Presentations.FindAsync(id);
+            _context.Presentations.Remove(presentation);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));

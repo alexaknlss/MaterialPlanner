@@ -1,5 +1,6 @@
 @model MaterialPlanner.Models.MaterialDetails
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @{
     ViewData["Title"] = "Details";
 }
@@ -8,6 +9,9 @@
 
 <hr />
 
+<!-- ===================== -->
+<!-- INFO DEL MATERIAL -->
+<!-- ===================== -->
 <dl class="row">
 
     <dt class="col-sm-3">Material</dt>
@@ -23,19 +27,154 @@
     <dd class="col-sm-9">@Model.Presentation?.Name</dd>
 
     <dt class="col-sm-3">Status</dt>
-    <dd class="col-sm-9">@Model.Status</dd>
+    <dd class="col-sm-9">
+        @(Model.Status ? "Active" : "Inactive")
+    </dd>
 
     <dt class="col-sm-3">Consumption</dt>
     <dd class="col-sm-9">@Model.Construction</dd>
 
 </dl>
 
+<hr />
+
+<!-- ===================== -->
+<!-- IMAGES GALLERY -->
+<!-- ===================== -->
+<h4>Images</h4>
+
+@if (Model.Images != null && Model.Images.Any())
+{
+    <div class="row">
+
+        @foreach (var img in Model.Images)
+        {
+            <div class="col-md-3 mb-3">
+
+                <div class="card shadow-sm position-relative">
+
+                    <!-- BOTÓN ELIMINAR (ESQUINA) -->
+                    <form asp-controller="Images"
+                          asp-action="Delete"
+                          asp-route-id="@img.Id"
+                          method="post"
+                          class="position-absolute delete-form"
+                          style="top:12px; right:12px; z-index:15;">
+
+                        <button type="button"
+                                class="btn btn-sm btn-danger rounded-circle btn-delete"
+                                data-id="@img.Id">
+
+                            <i class="bi bi-trash-fill"></i>
+
+                        </button>
+
+                    </form>
+
+                    <!-- LINK A DETAILS -->
+                    <a asp-controller="Images"
+                       asp-action="Details"
+                       asp-route-id="@img.Id">
+
+                        <img src="@img.Path"
+                             class="card-img-top"
+                             style="height:200px; object-fit:cover; cursor:pointer;" />
+
+                    </a>
+
+                    <div class="card-body p-2 text-center">
+                        <small class="text-muted">
+                            @img.Description
+                        </small>
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+}
+else
+{
+    <p class="text-muted">No images available.</p>
+}
+
+<hr />
+
+<!-- ===================== -->
+<!-- UPLOAD IMAGE FORM -->
+<!-- ===================== -->
+<h4>Add Image</h4>
+
+<form asp-controller="Images"
+      asp-action="Create"
+      method="post"
+      enctype="multipart/form-data"
+      novalidate>
+
+    <!-- IMPORTANTE: relación automática -->
+    <input type="hidden" name="MaterialDetailsId" value="@Model.Id" />
+
+    <div class="mb-3">
+        <input type="file" name="file" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <input type="text" name="Description" class="form-control" placeholder="Image description (optional)" />
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Upload Image
+    </button>
+
+</form>
+
+<hr />
+
+<!-- ===================== -->
+<!-- BOTONES -->
+<!-- ===================== -->
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">
+
+    <a asp-action="Edit"
+       asp-route-id="@Model?.Id"
+       class="btn btn-primary">
         Edit
     </a>
 
-    <a asp-action="Index" class="btn btn-secondary">
+    <a asp-action="Index"
+       class="btn btn-secondary">
         Back to List
     </a>
+
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    document.querySelectorAll('.btn-delete').forEach(button => {
+
+    button.addEventListener('click', function () {
+
+    let form = this.closest('form');
+
+    Swal.fire({
+    title: "Are you sure?",
+    text: "This image will be permanently deleted!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#6c757d",
+    confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+    if (result.isConfirmed) {
+    form.submit();
+    }
+    });
+
+    });
+
+    });
+
+    });
+</script>
