@@ -9,26 +9,30 @@ namespace MaterialPlanner.Models
         [Key]
         public int Id { get; set; }
 
-        public int MaterialId { get; set; }
-        public int BrandId { get; set; }
-        public int ProductId { get; set; }
-        public int PresentationId { get; set; }
+        // 🔑 FK ahora nullable (IMPORTANTE para SetNull)
+        public int? MaterialId { get; set; }
+        public int? BrandId { get; set; }
+        public int? ProductId { get; set; }
+        public int? PresentationId { get; set; }
 
-        // Relaciones explícitas
+        // Relaciones explícitas (también nullable)
         [ForeignKey(nameof(MaterialId))]
-        public Materials Material { get; set; } = null!;
+        public Materials? Material { get; set; }
 
         [ForeignKey(nameof(BrandId))]
-        public Brands Brand { get; set; } = null!;
+        public Brands? Brand { get; set; }
 
         [ForeignKey(nameof(ProductId))]
-        public Products Product { get; set; } = null!;
+        public Products? Product { get; set; }
 
         [ForeignKey(nameof(PresentationId))]
-        public Presentation Presentation { get; set; } = null!;
+        public Presentation? Presentation { get; set; }
 
         public bool Status { get; set; }
 
         public int Construction { get; set; }
+
+        // 🖼️ Relación con imágenes (1 a muchos)
+        public ICollection<Image> Images { get; set; } = new List<Image>();
     }
 }
