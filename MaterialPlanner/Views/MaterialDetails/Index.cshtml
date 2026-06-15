@@ -37,8 +37,12 @@
                         {
                             <tr>
                                 <td style="width: 20%;">
-                                            @item.Material?.Description</td>
-                                <td>@item.Brand?.Name</td>
+                                    <strong>@item.Material?.Description</strong>
+                                    <br />
+                                    <span class="badge bg-info text-dark">
+                                        ITEM: @item.Material?.ItemMaterial
+                                    </span>
+                                </td>
                                 <td style="width: 20%;">
                                     <strong>@item.Product?.Description</strong>
                                     <br />

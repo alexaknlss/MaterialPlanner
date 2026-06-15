@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MaterialPlanner.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 </head>
 <body>
@@ -42,69 +44,78 @@
     </nav>
 
     <!-- Menú lateral -->
-    <div class="offcanvas offcanvas-start"
+   
+    <div class="offcanvas offcanvas-start modern-sidebar"
          tabindex="-1"
          id="sidebarMenu"
          aria-labelledby="sidebarMenuLabel">
 
-        <div class="offcanvas-header">
+        <div class="offcanvas-header sidebar-header">
+            <div class="sidebar-brand">
+                <div class="brand-icon">
+                    <i class="bi bi-box-seam"></i>
+                </div>
 
-            <h5 class="offcanvas-title"
-                id="sidebarMenuLabel">
-
-                MaterialPlanner
-
-            </h5>
+                <div>
+                    <h5 id="sidebarMenuLabel">MaterialPlanner</h5>
+                    <small>Dashboard</small>
+                </div>
+            </div>
 
             <button type="button"
                     class="btn-close"
                     data-bs-dismiss="offcanvas"
                     aria-label="Close">
             </button>
-
         </div>
 
-        <div class="offcanvas-body">
+        <div class="offcanvas-body sidebar-body">
 
-            <ul class="nav flex-column">
+            <div class="sidebar-section">Main</div>
 
-                <li class="nav-item">
-                    <a class="nav-link"
-                       asp-controller="Home"
-                       asp-action="Index">
+            <a asp-controller="Home" asp-action="Index" class="sidebar-link">
+                <i class="bi bi-grid"></i>
+                <span>Inicio</span>
+            </a>
 
-                        🏠 Inicio
+            <a asp-controller="MaterialDetails" asp-action="Index" class="sidebar-link">
+                <i class="bi bi-layers"></i>
+                <span>Material Details</span>
+            </a>
 
-                    </a>
-                </li>
+            <a asp-controller="Images" asp-action="Index" class="sidebar-link">
+                <i class="bi bi-image"></i>
+                <span>Images</span>
+            </a>
 
-                <li class="nav-item">
-                    <a class="nav-link"
-                       asp-controller="MaterialDetails"
-                       asp-action="Index">
+            <div class="sidebar-section">Management</div>
 
-                        📦 Material Details
+            <a asp-controller="Brands" asp-action="Index" class="sidebar-link">
+                <i class="bi bi-tags"></i>
+                <span>Brands</span>
+            </a>
 
-                    </a>
-                </li>
+            <a asp-controller="Products" asp-action="Index" class="sidebar-link">
+                <i class="bi bi-bag"></i>
+                <span>Products</span>
+            </a>
 
-                <li class="nav-item">
-                    <a class="nav-link"
-                       asp-controller="Images"
-                       asp-action="Index">
+            <a asp-controller="Materials" asp-action="Index" class="sidebar-link">
+                <i class="bi bi-box"></i>
+                <span>Materials</span>
+            </a>
 
-                        🖼️ Images
-
-                    </a>
-                </li>
-
-            </ul>
+            <a asp-controller="Presentations" asp-action="Index" class="sidebar-link">
+                <i class="bi bi-card-list"></i>
+                <span>Presentations</span>
+            </a>
 
         </div>
-
     </div>
+
+    
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="container pb-3" style="padding-top: 45px;">
             @RenderBody()
         </main>
     </div>
