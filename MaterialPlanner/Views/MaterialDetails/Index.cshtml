@@ -50,24 +50,31 @@
                                 <td>@item.Construction</td>
 
                                 <td class="text-center">
-
                                     <a asp-action="Edit"
                                        asp-route-id="@item.Id"
-                                       class="btn btn-sm btn-warning">
-                                        Edit
+                                       class="btn btn-sm btn-warning"
+                                       title="Edit">
+                                        <i class="bi bi-pencil-fill"></i>
                                     </a>
 
                                     <a asp-action="Details"
                                        asp-route-id="@item.Id"
-                                       class="btn btn-sm btn-info">
-                                        Details
+                                       class="btn btn-sm btn-info"
+                                       title="Details">
+                                        <i class="bi bi-eye"></i>
                                     </a>
 
-                                    <a asp-action="Delete"
-                                       asp-route-id="@item.Id"
-                                       class="btn btn-sm btn-danger">
-                                        Delete
-                                    </a>
+                                    <form asp-action="Delete"
+                                          asp-route-id="@item.Id"
+                                          method="post"
+                                          class="d-inline delete-form">
+
+                                        <button type="button"
+                                                class="btn btn-sm btn-danger btn-delete">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </button>
+
+                                    </form>
 
                                 </td>
                             </tr>
@@ -78,6 +85,43 @@
             </div>
 
         </div>
+
     </div>
 
 </div>
+
+@section Scripts {
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            document.querySelectorAll('.btn-delete').forEach(button => {
+
+                button.addEventListener('click', function () {
+
+                    let form = this.closest('form');
+
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "This record will be permanently deleted!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#d33",
+                        cancelButtonColor: "#6c757d",
+                        confirmButtonText: "Yes, delete it!"
+                    }).then((result) => {
+
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+
+                    });
+
+                });
+
+            });
+
+        });
+    </script>
+
+}
