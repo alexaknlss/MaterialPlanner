@@ -50,7 +50,10 @@
                                         SKU: @item.Product?.SKU
                                     </span>
                                 </td>
-                                <td>@item.Presentation?.Name</td>
+
+                                <td style="width: 20%;">
+                                    <strong>@item.Presentation?.Name</strong>
+                                </td>
 
                                 <td>
                                     <span class="badge @(item.Status ? "bg-success" : "bg-secondary")">
