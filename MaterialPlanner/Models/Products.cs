@@ -18,5 +18,11 @@ namespace MaterialPlanner.Models
         [Required]
         [Column(TypeName = "varchar(50)")]
         public string SKU { get; set; } = string.Empty;
+
+        [Column(TypeName = "datetime")]
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        [Column(TypeName = "datetime")]
+        public DateTime? UpdatedAt { get; set; }
     }
 }

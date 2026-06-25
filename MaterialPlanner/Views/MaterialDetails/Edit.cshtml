@@ -4,69 +4,128 @@
     ViewData["Title"] = "Edit";
 }
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <h1>Edit Material Detail</h1>
 
 <hr />
 
 <div class="row">
     <div class="col-md-6">
-        <form asp-action="Edit">
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
 
             <input type="hidden" asp-for="Id" />
 
-            <!-- Material -->
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- MATERIAL -->
             <div class="mb-3">
                 <label asp-for="MaterialId" class="form-label"></label>
                 <select asp-for="MaterialId"
                         asp-items="ViewBag.MaterialId"
                         class="form-select">
+                    <option value="">-- Select Material --</option>
                 </select>
                 <span asp-validation-for="MaterialId" class="text-danger"></span>
             </div>
 
-            <!-- Brand -->
+            <!-- BRAND -->
             <div class="mb-3">
                 <label asp-for="BrandId" class="form-label"></label>
                 <select asp-for="BrandId"
                         asp-items="ViewBag.BrandId"
                         class="form-select">
+                    <option value="">-- Select Brand --</option>
                 </select>
                 <span asp-validation-for="BrandId" class="text-danger"></span>
             </div>
 
-            <!-- Product -->
+            <!-- PRODUCT -->
             <div class="mb-3">
                 <label asp-for="ProductId" class="form-label"></label>
                 <select asp-for="ProductId"
                         asp-items="ViewBag.ProductId"
                         class="form-select">
+                    <option value="">-- Select Product --</option>
                 </select>
                 <span asp-validation-for="ProductId" class="text-danger"></span>
             </div>
 
-            <!-- Presentation -->
+            <!-- PRESENTATION -->
             <div class="mb-3">
                 <label asp-for="PresentationId" class="form-label"></label>
                 <select asp-for="PresentationId"
                         asp-items="ViewBag.PresentationId"
                         class="form-select">
+                    <option value="">-- Select Presentation --</option>
                 </select>
                 <span asp-validation-for="PresentationId" class="text-danger"></span>
             </div>
 
-            <!-- Status -->
+            <!-- STATUS -->
             <div class="form-check mb-3">
                 <input asp-for="Status" class="form-check-input" />
                 <label asp-for="Status" class="form-check-label"></label>
             </div>
 
-            <!-- Construction -->
+            <!-- CONSUMPTION -->
             <div class="mb-3">
-                <label asp-for="Construction" class="form-label">Consumption</label>
-                <input asp-for="Construction" class="form-control" />
-                <span asp-validation-for="Construction" class="text-danger"></span>
+                <label asp-for="Consumption" class="form-label"></label>
+                <input asp-for="Consumption" class="form-control" />
+                <span asp-validation-for="Consumption" class="text-danger"></span>
+            </div>
+
+            <!-- UNIT -->
+            <div class="mb-3">
+                <label asp-for="UnitId" class="form-label"></label>
+
+                <div class="input-group">
+
+                    <select asp-for="UnitId"
+                            id="unitSelect"
+                            class="form-select">
+
+                        <option value="">-- Select Unit --</option>
+
+                        @foreach (var item in ViewBag.Units)
+                        {
+                            <option value="@item.Id">
+                                @item.Name
+                            </option>
+                        }
+
+                    </select>
+
+                    <!-- BOTÓN AGREGAR -->
+                    <button type="button"
+                            class="btn btn-outline-primary"
+                            id="btnAddUnit"
+                            title="Add Unit">
+
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+
+                    <!-- BOTÓN GESTIONAR -->
+                    <a asp-controller="Units"
+                       asp-action="Index"
+                       asp-route-returnUrl="@Url.Action("Edit", "MaterialDetails", new { id = Model.Id })"
+                       class="btn btn-outline-secondary"
+                       title="Manage Units">
+                        <i class="bi bi-gear"></i>
+                    </a>
+
+                </div>
+
+                <span asp-validation-for="UnitId" class="text-danger"></span>
+            </div>
+
+            <!-- INFO -->
+            <div class="alert alert-info p-2">
+                <small>
+                    Update consumption and unit if needed
+                </small>
             </div>
 
             <button type="submit" class="btn btn-primary">
@@ -78,11 +137,125 @@
             </a>
 
         </form>
+
     </div>
 </div>
-
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+
+    <script>
+
+        $(document).ready(function () {
+
+        $("#unitSelect").off("change").on("change", async function () {
+
+        let select = $(this);
+
+        if (select.val() === "__add_new__") {
+
+        const result = await Swal.fire({
+        title: 'Add new unit',
+        input: 'text',
+        inputLabel: 'Unit name',
+        inputPlaceholder: 'e.g. box',
+        showCancelButton: true,
+        confirmButtonText: 'Save',
+        cancelButtonText: 'Cancel'
+        });
+
+        if (!result.isConfirmed || !result.value) {
+        select.val("");
+        return;
+        }
+
+        let name = result.value.trim();
+
+        if (name === "") {
+        select.val("");
+        return;
+        }
+
+        try {
+
+        const response = await $.ajax({
+        url: '/Units/CreateAjax',
+        type: 'POST',
+        data: {
+        name: name
+        }
+        });
+
+        $("<option>")
+        .val(response.id)
+        .text(response.name)
+        .insertBefore(
+        select.find("option[value='__add_new__']")
+        );
+
+        select.val(response.id);
+
+        }
+        catch (error) {
+
+        console.log(error);
+
+        Swal.fire(
+        "Error",
+        "Could not save unit",
+        "error"
+        );
+
+        select.val("");
+        }
+        }
+
+        });
+
+        });
+        $(document).ready(function () {
+
+        $("#btnAddUnit").click(async function () {
+
+        const result = await Swal.fire({
+        title: 'Add new unit',
+        input: 'text',
+        inputLabel: 'Unit name',
+        inputPlaceholder: 'e.g. Box',
+        showCancelButton: true,
+        confirmButtonText: 'Save'
+        });
+
+        if (!result.isConfirmed || !result.value) return;
+
+        let name = result.value.trim();
+
+        if (name === "") return;
+
+        try {
+
+        const response = await $.ajax({
+        url: '/Units/CreateAjax',
+        type: 'POST',
+        data: { name: name }
+        });
+
+        $("<option>")
+        .val(response.id)
+        .text(response.name)
+        .appendTo("#unitSelect");
+
+        $("#unitSelect").val(response.id);
+
+        Swal.fire("Success", "Unit added", "success");
+
+        } catch (err) {
+
+        Swal.fire("Error", "Could not add unit", "error");
+        }
+
+        });
+
+        });
+
+    </script>
+
 }

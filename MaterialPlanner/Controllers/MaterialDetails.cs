@@ -22,12 +22,13 @@ namespace MaterialPlanner.Controllers
                 .Include(m => m.Brand)
                 .Include(m => m.Product)
                 .Include(m => m.Presentation)
-                .Include(m => m.Images); // 🆕 preparado para imágenes
+                .Include(m => m.Images)
+                .Include(m => m.Unit); // 🆕 Units
 
             return View(await materialDetails.ToListAsync());
         }
 
-        // GET: MaterialDetails/Details/5
+        // GET: Details
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -39,6 +40,7 @@ namespace MaterialPlanner.Controllers
                 .Include(m => m.Product)
                 .Include(m => m.Presentation)
                 .Include(m => m.Images)
+                .Include(m => m.Unit) // 🆕 Units
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (materialDetail == null)
@@ -47,14 +49,14 @@ namespace MaterialPlanner.Controllers
             return View(materialDetail);
         }
 
-        // GET: MaterialDetails/Create
+        // GET: Create
         public IActionResult Create()
         {
             LoadDropdowns();
             return View();
         }
 
-        // POST: MaterialDetails/Create
+        // POST: Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MaterialDetails materialDetail)
@@ -64,6 +66,7 @@ namespace MaterialPlanner.Controllers
             ModelState.Remove("Product");
             ModelState.Remove("Presentation");
             ModelState.Remove("Images");
+            ModelState.Remove("Unit"); // 🆕 importante
 
             if (ModelState.IsValid)
             {
@@ -76,7 +79,7 @@ namespace MaterialPlanner.Controllers
             return View(materialDetail);
         }
 
-        // GET: MaterialDetails/Edit/5
+        // GET: Edit
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -91,7 +94,7 @@ namespace MaterialPlanner.Controllers
             return View(materialDetail);
         }
 
-        // POST: MaterialDetails/Edit/5
+        // POST: Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, MaterialDetails materialDetail)
@@ -104,6 +107,7 @@ namespace MaterialPlanner.Controllers
             ModelState.Remove("Product");
             ModelState.Remove("Presentation");
             ModelState.Remove("Images");
+            ModelState.Remove("Unit"); // 🆕
 
             if (ModelState.IsValid)
             {
@@ -117,8 +121,9 @@ namespace MaterialPlanner.Controllers
                 existing.BrandId = materialDetail.BrandId;
                 existing.ProductId = materialDetail.ProductId;
                 existing.PresentationId = materialDetail.PresentationId;
+                existing.UnitId = materialDetail.UnitId; // 🆕 IMPORTANTE
                 existing.Status = materialDetail.Status;
-                existing.Construction = materialDetail.Construction;
+                existing.Consumption = materialDetail.Consumption;
 
                 await _context.SaveChangesAsync();
 
@@ -129,27 +134,7 @@ namespace MaterialPlanner.Controllers
             return View(materialDetail);
         }
 
-        // GET: MaterialDetails/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-                return NotFound();
-
-            var materialDetail = await _context.MaterialDetails
-                .Include(m => m.Material)
-                .Include(m => m.Brand)
-                .Include(m => m.Product)
-                .Include(m => m.Presentation)
-                .Include(m => m.Images)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (materialDetail == null)
-                return NotFound();
-
-            return View(materialDetail);
-        }
-
-        // POST: MaterialDetails/Delete/5
+        // DELETE (igual)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -166,12 +151,18 @@ namespace MaterialPlanner.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // DROPDOWNS
         private void LoadDropdowns()
         {
             ViewBag.MaterialId = new SelectList(_context.Materials, "Id", "Description");
             ViewBag.BrandId = new SelectList(_context.Brands, "Id", "Name");
             ViewBag.ProductId = new SelectList(_context.Products, "Id", "Description");
             ViewBag.PresentationId = new SelectList(_context.Presentations, "Id", "Name");
+
+            // 🆕 UNITS
+            ViewBag.Units = _context.Units
+                .Select(u => new { u.Id, u.Name })
+                .ToList();
         }
     }
 }
