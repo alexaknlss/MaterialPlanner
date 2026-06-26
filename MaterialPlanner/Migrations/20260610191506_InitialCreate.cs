@@ -75,7 +75,9 @@ namespace MaterialPlanner.Migrations
                     ProductId = table.Column<int>(type: "int", nullable: true),
                     PresentationId = table.Column<int>(type: "int", nullable: true),
                     Status = table.Column<bool>(type: "bit", nullable: false),
-                    Construction = table.Column<int>(type: "int", nullable: false)
+                    Construction = table.Column<int>(type: "int", nullable: false),
+                  
+                
                 },
                 constraints: table =>
                 {

@@ -32,6 +32,8 @@ namespace MaterialPlanner.Models
 
         public int Construction { get; set; }
 
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
         // 🖼️ Relación con imágenes (1 a muchos)
         public ICollection<Image> Images { get; set; } = new List<Image>();
     }

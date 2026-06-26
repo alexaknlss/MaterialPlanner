@@ -2,12 +2,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ClosedXML.Excel;
 
 namespace MaterialPlanner.Controllers
 {
     public class MaterialDetailsController : Controller
     {
         private readonly MaterialPlannerContext _context;
+
+        
 
         public MaterialDetailsController(MaterialPlannerContext context)
         {
@@ -119,6 +122,7 @@ namespace MaterialPlanner.Controllers
                 existing.PresentationId = materialDetail.PresentationId;
                 existing.Status = materialDetail.Status;
                 existing.Construction = materialDetail.Construction;
+              
 
                 await _context.SaveChangesAsync();
 
@@ -154,6 +158,8 @@ namespace MaterialPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            
+            
             var materialDetail = await _context.MaterialDetails
                 .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -164,6 +170,55 @@ namespace MaterialPlanner.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> ExportToExcel()
+        {
+            var materialDetails = await _context.MaterialDetails
+                .Include(m => m.Material)
+                .Include(m => m.Brand)
+                .Include(m => m.Product)
+                .Include(m => m.Presentation)
+                .ToListAsync();
+
+            using var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("Material Details");
+
+            worksheet.Cell(1, 1).Value = "Material";
+            worksheet.Cell(1, 2).Value = "Item Material";
+            worksheet.Cell(1, 3).Value = "Brand";
+            worksheet.Cell(1, 4).Value = "Product";
+            worksheet.Cell(1, 5).Value = "SKU";
+            worksheet.Cell(1, 6).Value = "Presentation";
+            worksheet.Cell(1, 7).Value = "Status";
+            worksheet.Cell(1, 8).Value = "Consumption";
+
+            int row = 2;
+
+            foreach (var item in materialDetails)
+            {
+                worksheet.Cell(row, 1).Value = item.Material?.Description;
+                worksheet.Cell(row, 2).Value = item.Material?.ItemMaterial;
+                worksheet.Cell(row, 3).Value = item.Brand?.Name;
+                worksheet.Cell(row, 4).Value = item.Product?.Description;
+                worksheet.Cell(row, 5).Value = item.Product?.SKU;
+                worksheet.Cell(row, 6).Value = item.Presentation?.Name;
+                worksheet.Cell(row, 7).Value = item.Status ? "Active" : "Inactive";
+                worksheet.Cell(row, 8).Value = item.Construction;
+
+                row++;
+            }
+
+            worksheet.Columns().AdjustToContents();
+
+            using var stream = new MemoryStream();
+            workbook.SaveAs(stream);
+
+            return File(
+                stream.ToArray(),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "MaterialDetails.xlsx"
+            );
         }
 
         private void LoadDropdowns()
