@@ -13,5 +13,11 @@ namespace MaterialPlanner.Models
         [Column(TypeName = "nvarchar(200)")]
         [MaxLength(200)]
         public string Name { get; set; } = string.Empty;
+
+        [Column(TypeName = "datetime")]
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        [Column(TypeName = "datetime")]
+        public DateTime? UpdatedAt { get; set; }
     }
 }

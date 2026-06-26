@@ -23,5 +23,12 @@ namespace MaterialPlanner.Models
 
         [ForeignKey("MaterialDetailsId")]
         public MaterialDetails MaterialDetails { get; set; } = null!;
+
+        // ⏱️ Timestamps
+        [Column(TypeName = "datetime")]
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        [Column(TypeName = "datetime")]
+        public DateTime? UpdatedAt { get; set; }
     }
 }

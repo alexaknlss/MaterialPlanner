@@ -1,0 +1,110 @@
+@model IEnumerable<MaterialPlanner.Models.Units>
+
+@{
+    ViewData["Title"] = "Units";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <h3 class="mb-0">Units</h3>
+
+        <div>
+
+            @if (!string.IsNullOrEmpty(ViewBag.ReturnUrl))
+            {
+                <a href="@ViewBag.ReturnUrl"
+                   class="btn btn-secondary me-2">
+                    <i class="bi bi-arrow-left"></i> Back
+                </a>
+            }
+            else
+            {
+                <a asp-controller="MaterialDetails"
+                   asp-action="Index"
+                   class="btn btn-secondary me-2">
+                    <i class="bi bi-arrow-left"></i> Back
+                </a>
+            }
+
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> New Unit
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="card shadow-sm">
+
+        <div class="card-body p-0">
+
+            <table class="table table-hover mb-0 align-middle">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                        <th style="width:160px;">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center p-4">
+                                No units found
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr id="row-@item.Id">
+
+                                <td>
+                                    @item.Name
+                                </td>
+
+                                <td>
+                                    @item.CreatedAt
+                                </td>
+
+                                <td>
+                                    @item.UpdatedAt
+                                </td>
+
+                                <td>
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-sm btn-warning">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+
+                                    <a asp-action="Delete"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-sm btn-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

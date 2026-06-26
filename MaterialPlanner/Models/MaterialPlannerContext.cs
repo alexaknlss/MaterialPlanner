@@ -1,12 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MaterialPlanner.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MaterialPlanner.Models;
 
 public partial class MaterialPlannerContext : DbContext
 {
-    public MaterialPlannerContext()
-    {
-    }
+    public MaterialPlannerContext() { }
 
     public MaterialPlannerContext(DbContextOptions<MaterialPlannerContext> options)
         : base(options)
@@ -19,22 +18,17 @@ public partial class MaterialPlannerContext : DbContext
     public DbSet<Products> Products { get; set; }
     public DbSet<MaterialDetails> MaterialDetails { get; set; }
     public DbSet<Image> Images { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer(
-    "Server=.;Database=MaterialPlanner;Trusted_Connection=True;TrustServerCertificate=True"
-);
+    public DbSet<Units> Units { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // 🖼️ IMAGES → MATERIALDETAILS (esto sí puede ser cascade)
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<Image>()
             .HasOne(i => i.MaterialDetails)
             .WithMany(m => m.Images)
             .HasForeignKey(i => i.MaterialDetailsId)
             .OnDelete(DeleteBehavior.Cascade);
-
-        // 🧩 RELACIONES SEGURAS (NO BORRAN MATERIALDETAILS)
 
         modelBuilder.Entity<MaterialDetails>()
             .HasOne(m => m.Brand)
@@ -59,9 +53,10 @@ public partial class MaterialPlannerContext : DbContext
             .WithMany()
             .HasForeignKey(m => m.PresentationId)
             .OnDelete(DeleteBehavior.SetNull);
-
-        OnModelCreatingPartial(modelBuilder);
+        modelBuilder.Entity<MaterialDetails>()
+            .HasOne(m => m.Unit)
+            .WithMany()
+            .HasForeignKey(m => m.UnitId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
-
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

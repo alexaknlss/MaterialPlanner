@@ -10,11 +10,13 @@
 
 <div class="row">
     <div class="col-md-6">
-        <form asp-action="Create">
+
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <!-- Material -->
+            <!-- MATERIAL -->
             <div class="mb-3">
                 <label asp-for="MaterialId" class="form-label"></label>
                 <select asp-for="MaterialId"
@@ -25,7 +27,7 @@
                 <span asp-validation-for="MaterialId" class="text-danger"></span>
             </div>
 
-            <!-- Brand -->
+            <!-- BRAND -->
             <div class="mb-3">
                 <label asp-for="BrandId" class="form-label"></label>
                 <select asp-for="BrandId"
@@ -36,7 +38,7 @@
                 <span asp-validation-for="BrandId" class="text-danger"></span>
             </div>
 
-            <!-- Product -->
+            <!-- PRODUCT -->
             <div class="mb-3">
                 <label asp-for="ProductId" class="form-label"></label>
                 <select asp-for="ProductId"
@@ -47,7 +49,7 @@
                 <span asp-validation-for="ProductId" class="text-danger"></span>
             </div>
 
-            <!-- Presentation -->
+            <!-- PRESENTATION -->
             <div class="mb-3">
                 <label asp-for="PresentationId" class="form-label"></label>
                 <select asp-for="PresentationId"
@@ -58,20 +60,70 @@
                 <span asp-validation-for="PresentationId" class="text-danger"></span>
             </div>
 
-            <!-- Status -->
+            <!-- STATUS -->
             <div class="form-check mb-3">
                 <input asp-for="Status" class="form-check-input" />
                 <label asp-for="Status" class="form-check-label"></label>
             </div>
 
-            <!-- Construction -->
+            <!-- CONSUMPTION -->
             <div class="mb-3">
-                <label asp-for="Construction" class="form-label">Consumption</label>
-                <input asp-for="Construction" class="form-control" />
-                <span asp-validation-for="Construction" class="text-danger"></span>
+                <label asp-for="Consumption" class="form-label"></label>
+                <input asp-for="Consumption"
+                       class="form-control"
+                       placeholder="Enter quantity (e.g. 10)" />
+                <span asp-validation-for="Consumption" class="text-danger"></span>
             </div>
 
-           
+            <!-- UNIT -->
+            <div class="mb-3">
+                <label asp-for="UnitId" class="form-label"></label>
+
+                <div class="input-group">
+
+                    <select asp-for="UnitId"
+                            id="unitSelect"
+                            class="form-select">
+
+                        <option value="">-- Select Unit --</option>
+
+                        @foreach (var item in ViewBag.Units)
+                        {
+                            <option value="@item.Id">
+                                @item.Name
+                            </option>
+                        }
+
+                    </select>
+
+                    <!-- BOTÓN AGREGAR UNIT -->
+                    <button type="button"
+                            class="btn btn-outline-primary"
+                            id="btnAddUnit"
+                            title="Add Unit">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+
+                    <!-- BOTÓN GESTIONAR UNITS -->
+                    <a asp-controller="Units"
+                       asp-action="Index"
+                       asp-route-returnUrl="@Url.Action("Create", "MaterialDetails")"
+                       class="btn btn-outline-secondary"
+                       title="Manage Units">
+                        <i class="bi bi-gear"></i>
+                    </a>
+
+                </div>
+
+                <span asp-validation-for="UnitId" class="text-danger"></span>
+            </div>
+
+            <!-- HELP -->
+            <div class="alert alert-info p-2">
+                <small>
+                    Example: 10 kg, 5 m, 20 pcs
+                </small>
+            </div>
 
             <button type="submit" class="btn btn-primary">
                 Save
@@ -82,5 +134,56 @@
             </a>
 
         </form>
+
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+
+            // AGREGAR UNIT DESDE BOTÓN +
+            $("#btnAddUnit").click(async function () {
+
+                const result = await Swal.fire({
+                    title: 'Add new unit',
+                    input: 'text',
+                    inputLabel: 'Unit name',
+                    inputPlaceholder: 'e.g. Box',
+                    showCancelButton: true,
+                    confirmButtonText: 'Save'
+                });
+
+                if (!result.isConfirmed || !result.value) return;
+
+                let name = result.value.trim();
+                if (name === "") return;
+
+                try {
+                    const response = await $.ajax({
+                        url: '/Units/CreateAjax',
+                        type: 'POST',
+                        data: { name: name }
+                    });
+
+                    $("<option>")
+                        .val(response.id)
+                        .text(response.name)
+                        .appendTo("#unitSelect");
+
+                    $("#unitSelect").val(response.id);
+
+                    Swal.fire("Success", "Unit added", "success");
+
+                } catch (err) {
+                    Swal.fire("Error", "Could not add unit", "error");
+                }
+            });
+
+        });
+    </script>
+}

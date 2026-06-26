@@ -8,14 +8,10 @@
 
 <hr />
 
-<!-- ===================== -->
-<!-- DASHBOARD PRINCIPAL -->
-<!-- ===================== -->
 <div class="row">
 
     <!-- ===================== -->
     <!-- COLUMNA IZQUIERDA -->
-    <!-- INFO + FORMULARIO -->
     <!-- ===================== -->
     <div class="col-md-4">
 
@@ -27,22 +23,30 @@
 
             <div class="card-body">
 
-                <p><strong>Material:</strong> @Model.Material?.Description</p>
-                <p><strong>Brand:</strong> @Model.Brand?.Name</p>
-                <p><strong>Product:</strong> @Model.Product?.Description</p>
-                <p><strong>Presentation:</strong> @Model.Presentation?.Name</p>
+                <p><strong>Material:</strong> @Model.Material?.Description </p>
+                <p><strong class="badge bg-info text-dark">Item Material:</strong> @Model.Material?.ItemMaterial </p>
+
+                <p><strong>Brand:</strong> @Model.Brand?.Name </p>
+
+                <p><strong>Product:</strong> @Model.Product?.Description </p>
+                <p><strong class="badge bg-info text-dark">SKU:</strong> @Model.Product?.SKU </p>
+
+                <p><strong>Presentation:</strong> @Model.Presentation?.Name </p>
 
                 <p>
                     <strong>Status:</strong>
                     @(Model.Status ? "Active" : "Inactive")
                 </p>
 
-                <p><strong>Consumption:</strong> @Model.Construction</p>
+                <p>
+                    <strong>Consumption:</strong>
+                    @Model.Consumption @Model.Unit.Name
+                </p>
 
             </div>
         </div>
 
-        <!-- FORMULARIO -->
+        <!-- FORMULARIO IMAGEN -->
         <div class="card shadow-sm">
 
             <div class="card-header bg-success text-white">
@@ -55,6 +59,8 @@
                       asp-action="Create"
                       method="post"
                       enctype="multipart/form-data">
+
+                    @Html.AntiForgeryToken()
 
                     <input type="hidden" name="MaterialDetailsId" value="@Model.Id" />
 
@@ -69,7 +75,7 @@
                                placeholder="Description (optional)" />
                     </div>
 
-                    <button class="btn btn-success w-100">
+                    <button type="submit" class="btn btn-success w-100">
                         Upload Image
                     </button>
 
@@ -82,7 +88,6 @@
 
     <!-- ===================== -->
     <!-- COLUMNA DERECHA -->
-    <!-- GALERÍA -->
     <!-- ===================== -->
     <div class="col-md-8">
 
@@ -112,7 +117,9 @@
                                           class="position-absolute"
                                           style="top:10px; right:10px; z-index:10;">
 
-                                        <button type="button"
+                                        @Html.AntiForgeryToken()
+
+                                        <button type="submit"
                                                 class="btn btn-sm btn-danger rounded-circle btn-delete">
                                             <i class="bi bi-trash-fill"></i>
                                         </button>
@@ -155,9 +162,7 @@
 
 </div>
 
-<!-- ===================== -->
 <!-- BOTONES -->
-<!-- ===================== -->
 <div class="mt-3">
 
     <a asp-action="Edit"
@@ -173,15 +178,14 @@
 
 </div>
 
-<!-- ===================== -->
-<!-- SWEETALERT DELETE -->
-<!-- ===================== -->
+<!-- SWEETALERT -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
 
         document.querySelectorAll('.btn-delete').forEach(button => {
 
-            button.addEventListener('click', function () {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
 
                 let form = this.closest('form');
 

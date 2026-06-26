@@ -4,6 +4,7 @@ using MaterialPlanner.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MaterialPlanner.Migrations
 {
     [DbContext(typeof(MaterialPlannerContext))]
-    partial class MaterialPlannerContextModelSnapshot : ModelSnapshot
+    [Migration("20260623142025_CreateBrands")]
+    partial class CreateBrands
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,9 +57,6 @@ namespace MaterialPlanner.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(150)
@@ -68,9 +68,6 @@ namespace MaterialPlanner.Migrations
                     b.Property<string>("Path")
                         .IsRequired()
                         .HasColumnType("nvarchar(300)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime");
 
                     b.HasKey("Id");
 
@@ -108,11 +105,10 @@ namespace MaterialPlanner.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("UnitId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime");
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -123,8 +119,6 @@ namespace MaterialPlanner.Migrations
                     b.HasIndex("PresentationId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("UnitId");
 
                     b.ToTable("MaterialDetails");
                 });
@@ -137,9 +131,6 @@ namespace MaterialPlanner.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -148,9 +139,6 @@ namespace MaterialPlanner.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime");
 
                     b.HasKey("Id");
 
@@ -165,16 +153,10 @@ namespace MaterialPlanner.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime");
 
                     b.HasKey("Id");
 
@@ -189,9 +171,6 @@ namespace MaterialPlanner.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -200,39 +179,12 @@ namespace MaterialPlanner.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(50)");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime");
-
                     b.HasKey("Id");
 
                     b.HasIndex("SKU")
                         .IsUnique();
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("MaterialPlanner.Models.Unidades", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Units");
                 });
 
             modelBuilder.Entity("MaterialPlanner.Models.Image", b =>
@@ -268,11 +220,6 @@ namespace MaterialPlanner.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("MaterialPlanner.Models.Unidades", "Unit")
-                        .WithMany()
-                        .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.Navigation("Brand");
 
                     b.Navigation("Material");
@@ -280,8 +227,6 @@ namespace MaterialPlanner.Migrations
                     b.Navigation("Presentation");
 
                     b.Navigation("Product");
-
-                    b.Navigation("Unit");
                 });
 
             modelBuilder.Entity("MaterialPlanner.Models.MaterialDetails", b =>

@@ -20,10 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="Views\Brands\" />
     <Folder Include="Views\Materials\" />
-    <Folder Include="Views\MaterialDetails\" />
     <Folder Include="Views\Products\" />
+    <Folder Include="Views\Units\" />
   </ItemGroup>
 
 </Project>

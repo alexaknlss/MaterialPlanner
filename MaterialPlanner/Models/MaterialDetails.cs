@@ -9,13 +9,13 @@ namespace MaterialPlanner.Models
         [Key]
         public int Id { get; set; }
 
-        // 🔑 FK ahora nullable (IMPORTANTE para SetNull)
+        // 🔑 FK nullable para permitir SetNull
         public int? MaterialId { get; set; }
         public int? BrandId { get; set; }
         public int? ProductId { get; set; }
         public int? PresentationId { get; set; }
 
-        // Relaciones explícitas (también nullable)
+        // Relaciones
         [ForeignKey(nameof(MaterialId))]
         public Materials? Material { get; set; }
 
@@ -28,13 +28,28 @@ namespace MaterialPlanner.Models
         [ForeignKey(nameof(PresentationId))]
         public Presentation? Presentation { get; set; }
 
+        // Cantidad consumida
+        [Required]
+        public int Consumption { get; set; }
+
+        // Unidad seleccionada desde un Select
+        public int? UnitId { get; set; }
+
+        [ForeignKey(nameof(UnitId))]
+        public Units? Unit { get; set; }
+
         public bool Status { get; set; }
 
-        public int Construction { get; set; }
-
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+     
 
         // 🖼️ Relación con imágenes (1 a muchos)
         public ICollection<Image> Images { get; set; } = new List<Image>();
+
+        // ⏱️ Timestamps
+        [Column(TypeName = "datetime")]
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        [Column(TypeName = "datetime")]
+        public DateTime? UpdatedAt { get; set; }
     }
 }
