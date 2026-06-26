@@ -40,6 +40,8 @@ namespace MaterialPlanner.Models
 
         public bool Status { get; set; }
 
+     
+
         // 🖼️ Relación con imágenes (1 a muchos)
         public ICollection<Image> Images { get; set; } = new List<Image>();
 
