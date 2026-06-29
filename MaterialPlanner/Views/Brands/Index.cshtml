@@ -14,6 +14,8 @@
         </a>
     </div>
 
+
+
     <table class="table table-striped table-hover table-bordered align-middle">
         <thead class="table-dark">
             <tr>
@@ -27,7 +29,10 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Name)
+                        <div class="fw-semibold">@item.Name</div>
+                        <small class="text-muted">
+                            Created: @item.CreatedAt.ToString("dd/MM/yyyy hh:mm tt")
+                        </small>
                     </td>
 
                     <td class="text-center">

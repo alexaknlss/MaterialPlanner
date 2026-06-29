@@ -18,7 +18,8 @@ namespace MaterialPlanner.Controllers
         }
 
         // GET: MaterialDetails
-        public async Task<IActionResult> Index()
+
+        public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate)
         {
             var materialDetails = _context.MaterialDetails
                 .Include(m => m.Material)
@@ -26,10 +27,25 @@ namespace MaterialPlanner.Controllers
                 .Include(m => m.Product)
                 .Include(m => m.Presentation)
                 .Include(m => m.Images)
-                .Include(m => m.Unit); // 🆕 Units
+                .Include(m => m.Unit)
+                .AsQueryable();
+
+            if (startDate.HasValue)
+            {
+                materialDetails = materialDetails.Where(m => m.CreatedAt.Date >= startDate.Value.Date);
+            }
+
+            if (endDate.HasValue)
+            {
+                materialDetails = materialDetails.Where(m => m.CreatedAt.Date <= endDate.Value.Date);
+            }
+
+            ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
+            ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
 
             return View(await materialDetails.ToListAsync());
         }
+
 
         // GET: Details
         public async Task<IActionResult> Details(int? id)
@@ -156,14 +172,29 @@ namespace MaterialPlanner.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> ExportToExcel()
+        public async Task<IActionResult> ExportToExcel(DateTime? startDate, DateTime? endDate)
         {
-            var materialDetails = await _context.MaterialDetails
+            var materialDetailsQuery = _context.MaterialDetails
                 .Include(m => m.Material)
                 .Include(m => m.Brand)
                 .Include(m => m.Product)
                 .Include(m => m.Presentation)
-                .ToListAsync();
+                .Include(m => m.Unit)
+                .AsQueryable();
+
+            if (startDate.HasValue)
+            {
+                materialDetailsQuery = materialDetailsQuery
+                    .Where(m => m.CreatedAt.Date >= startDate.Value.Date);
+            }
+
+            if (endDate.HasValue)
+            {
+                materialDetailsQuery = materialDetailsQuery
+                    .Where(m => m.CreatedAt.Date <= endDate.Value.Date);
+            }
+
+            var materialDetails = await materialDetailsQuery.ToListAsync();
 
             using var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Material Details");
@@ -176,6 +207,8 @@ namespace MaterialPlanner.Controllers
             worksheet.Cell(1, 6).Value = "Presentation";
             worksheet.Cell(1, 7).Value = "Status";
             worksheet.Cell(1, 8).Value = "Consumption";
+            worksheet.Cell(1, 9).Value = "Unit";
+            worksheet.Cell(1, 10).Value = "Created At";
 
             int row = 2;
 
@@ -189,6 +222,8 @@ namespace MaterialPlanner.Controllers
                 worksheet.Cell(row, 6).Value = item.Presentation?.Name;
                 worksheet.Cell(row, 7).Value = item.Status ? "Active" : "Inactive";
                 worksheet.Cell(row, 8).Value = item.Consumption;
+                worksheet.Cell(row, 9).Value = item.Unit?.Name;
+                worksheet.Cell(row, 10).Value = item.CreatedAt.ToString("dd/MM/yyyy hh:mm tt");
 
                 row++;
             }

@@ -14,10 +14,29 @@ namespace MaterialPlanner.Controllers
         }
 
         // GET: Brands
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate)
         {
-            return View(await _context.Brands.ToListAsync());
+            var brands = _context.Brands.AsQueryable();
+
+            if (startDate.HasValue)
+            {
+                brands = brands.Where(b => b.CreatedAt.Date >= startDate.Value.Date);
+            }
+
+            if (endDate.HasValue)
+            {
+                brands = brands.Where(b => b.CreatedAt.Date <= endDate.Value.Date);
+            }
+
+            ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
+            ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
+
+            return View(await brands.ToListAsync());
         }
+
+
+
+
 
         // GET: Brands/Details/5
         public async Task<IActionResult> Details(int? id)
