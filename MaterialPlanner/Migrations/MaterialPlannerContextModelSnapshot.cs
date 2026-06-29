@@ -43,7 +43,7 @@ namespace MaterialPlanner.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Brands");
+                    b.ToTable("Brands", (string)null);
                 });
 
             modelBuilder.Entity("MaterialPlanner.Models.Image", b =>
@@ -76,7 +76,7 @@ namespace MaterialPlanner.Migrations
 
                     b.HasIndex("MaterialDetailsId");
 
-                    b.ToTable("Images");
+                    b.ToTable("Images", (string)null);
                 });
 
             modelBuilder.Entity("MaterialPlanner.Models.MaterialDetails", b =>
@@ -94,7 +94,7 @@ namespace MaterialPlanner.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime");
 
                     b.Property<int?>("MaterialId")
                         .HasColumnType("int");
@@ -126,7 +126,7 @@ namespace MaterialPlanner.Migrations
 
                     b.HasIndex("UnitId");
 
-                    b.ToTable("MaterialDetails");
+                    b.ToTable("MaterialDetails", (string)null);
                 });
 
             modelBuilder.Entity("MaterialPlanner.Models.Materials", b =>
@@ -154,7 +154,7 @@ namespace MaterialPlanner.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Materials");
+                    b.ToTable("Materials", (string)null);
                 });
 
             modelBuilder.Entity("MaterialPlanner.Models.Presentation", b =>
@@ -178,7 +178,7 @@ namespace MaterialPlanner.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Presentations");
+                    b.ToTable("Presentations", (string)null);
                 });
 
             modelBuilder.Entity("MaterialPlanner.Models.Products", b =>
@@ -208,7 +208,7 @@ namespace MaterialPlanner.Migrations
                     b.HasIndex("SKU")
                         .IsUnique();
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("MaterialPlanner.Models.Unidades", b =>
@@ -232,7 +232,7 @@ namespace MaterialPlanner.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Units");
+                    b.ToTable("Units", (string)null);
                 });
 
             modelBuilder.Entity("MaterialPlanner.Models.Image", b =>

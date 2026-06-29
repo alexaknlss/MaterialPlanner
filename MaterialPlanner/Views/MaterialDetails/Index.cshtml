@@ -9,17 +9,49 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="mb-0">Material Details</h2>
 
-        <div>
-            <a asp-action="ExportToExcel" class="btn btn-success me-2">
+        
+        <form id="filterForm" asp-action="Index" method="get" class="d-flex align-items-end gap-2">
+
+            <div>
+                <label class="form-label small mb-1">From</label>
+                <input type="date"
+                       name="startDate"
+                       value="@ViewBag.StartDate"
+                       class="form-control form-control-sm" />
+            </div>
+
+            <div>
+                <label class="form-label small mb-1">To</label>
+                <input type="date"
+                       name="endDate"
+                       value="@ViewBag.EndDate"
+                       class="form-control form-control-sm" />
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-sm">
+                Filter
+            </button>
+
+            <a asp-action="Index" class="btn btn-secondary btn-sm">
+                Clear
+            </a>
+
+            <a asp-action="ExportToExcel"
+               asp-route-startDate="@ViewBag.StartDate"
+               asp-route-endDate="@ViewBag.EndDate"
+               class="btn btn-success btn-sm">
                 <i class="bi bi-file-earmark-excel"></i> Export Excel
             </a>
 
-            <a asp-action="Create" class="btn btn-primary">
+            <a asp-action="Create" class="btn btn-primary btn-sm">
                 + Create New
             </a>
-        </div>
+
+        </form>
+
     </div>
    
+
 
     <div class="card shadow-sm border-0">
         <div class="card-body ">
@@ -35,7 +67,7 @@
                             <th>Presentation</th>
                             <th>Status</th>
                             <th class="text-center">Consumption</th>
-                            
+                            <th class="text-center">Fecha de creación</th>
 
 
                             <th class="text-center">Actions</th>
@@ -85,7 +117,14 @@
                                     </span>
                                 </td>
 
+
+
                                 <td class="text-center">@item.Consumption @item.Unit?.Name</td>
+
+                               <!-- nuevalinea-->
+                                <td style="width: 20%;">
+                                    <strong>@item.CreatedAt.ToString("dd/MM/yyyy hh:mm tt")</strong>
+                                </td>
 
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center align-items-center gap-2">
