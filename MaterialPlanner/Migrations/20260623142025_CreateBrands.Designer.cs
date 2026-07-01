@@ -90,6 +90,9 @@ namespace MaterialPlanner.Migrations
                     b.Property<int>("Consumption")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("MaterialId")
                         .HasColumnType("int");
 

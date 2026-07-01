@@ -31,8 +31,16 @@
                     <td>@item.Id</td>
 
                     <td>
-                        @Html.DisplayFor(modelItem => item.Description)
+                        <div class="fw-semibold">
+                            @item.Description
+                        </div>
+
+                        <small class="text-muted">
+                            Created: @item.CreatedAt.ToString("dd/MM/yyyy hh:mm tt")
+                        </small>
                     </td>
+
+
 
                     <td>
                         @Html.DisplayFor(modelItem => item.SKU)
