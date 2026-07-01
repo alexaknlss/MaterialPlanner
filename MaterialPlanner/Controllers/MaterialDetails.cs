@@ -2,7 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+<<<<<<< HEAD
+using Rotativa.AspNetCore;
+using Rotativa.AspNetCore.Options;
+
+=======
 using ClosedXML.Excel;
+>>>>>>> origin/master
 
 namespace MaterialPlanner.Controllers
 {
@@ -152,6 +158,28 @@ namespace MaterialPlanner.Controllers
             LoadDropdowns();
             return View(materialDetail);
         }
+        public async Task<IActionResult> ReportePDF(int id)
+        {
+            var material = await _context.MaterialDetails
+                .Include(m => m.Material)
+                .Include(m => m.Brand)
+                .Include(m => m.Product)
+                .Include(m => m.Presentation)
+                .Include(m => m.Unit)
+                .Include(m => m.Images)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (material == null)
+                return NotFound();
+
+            return new ViewAsPdf("Print", material)
+            {
+                FileName = $"Material_{id}.pdf",
+                PageSize = Size.A4,
+                PageOrientation = Orientation.Landscape,
+                PageMargins = new Margins(10, 10, 10, 10)
+            };
+        }
 
         // DELETE (igual)
         [HttpPost, ActionName("Delete")]
@@ -171,6 +199,7 @@ namespace MaterialPlanner.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+       
 
         public async Task<IActionResult> ExportToExcel(DateTime? startDate, DateTime? endDate)
         {
