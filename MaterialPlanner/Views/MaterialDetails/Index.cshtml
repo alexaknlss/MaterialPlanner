@@ -87,13 +87,7 @@
                                             <i class="bi bi-pencil-fill"></i>
                                         </a>
 
-                                        <a asp-action="Details"
-                                           asp-route-id="@item.Id"
-                                           onclick="event.stopPropagation();"
-                                           class="btn btn-sm btn-info d-flex align-items-center justify-content-center"
-                                           title="Details">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
+                                        
 
                                         <form asp-action="Delete"
                                               asp-route-id="@item.Id"

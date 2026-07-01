@@ -1,0 +1,232 @@
+﻿@model MaterialPlanner.Models.MaterialDetails
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Reporte de Material</title>
+
+    <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 20px;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 14px;
+                color: #000;
+            }
+
+            /* Marco de toda la hoja */
+            .reporte {
+                border: 3px solid #000;
+                padding: 25px;
+                min-height: 95vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            h2 {
+                text-align: center;
+                margin-top: 0;
+                margin-bottom: 35px;
+            }
+
+            /* Caja de información - Ahora en la parte superior */
+            .info {
+                border: 2px solid #000;
+                margin-bottom: 40px;
+                flex-shrink: 0;
+            }
+
+            .info-header {
+                text-align: center;
+                font-size: 18px;
+                font-weight: bold;
+                padding: 12px;
+                border-bottom: 2px solid #000;
+                background-color: #f5f5f5;
+            }
+
+            .info-body {
+                padding: 20px 30px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px 30px;
+            }
+
+            .fila {
+                margin: 8px 0;
+                display: flex;
+                align-items: baseline;
+            }
+
+            .etiqueta {
+                display: inline-block;
+                width: 120px;
+                font-weight: bold;
+                flex-shrink: 0;
+            }
+
+            .valor {
+                word-break: break-word;
+            }
+
+            /* Área de imágenes - Ahora en la parte inferior */
+            .imagenes {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                min-height: 200px;
+            }
+
+                .imagenes h3 {
+                    margin: 0 0 20px 0;
+                    font-size: 20px;
+                    flex-shrink: 0;
+                }
+
+            .galeria {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+                align-content: flex-start;
+                flex: 1;
+            }
+
+            .img-box {
+                border: 1px solid #000;
+                padding: 5px;
+                flex: 0 0 auto;
+            }
+
+                .img-box img {
+                    width: 200px;
+                    height: 200px;
+                    object-fit: cover;
+                    display: block;
+                }
+
+            .sin-imagenes {
+                text-align: center;
+                margin-top: 40px;
+                font-style: italic;
+                font-size: 16px;
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* Ajustes para impresión */
+            @@media print {
+                body {
+                    margin: 0;
+                    padding: 10px;
+                }
+
+                .reporte {
+                    border: 3px solid #000;
+                    padding: 20px;
+                    min-height: 100vh;
+                }
+
+                .img-box img {
+                    width: 180px;
+                    height: 180px;
+                }
+            }
+
+            /* Responsive para pantallas pequeñas */
+            @@media (max-width: 768px) {
+                .info-body {
+                    grid-template-columns: 1fr;
+                    padding: 15px;
+                }
+
+                .img-box img {
+                    width: 150px;
+                    height: 150px;
+                }
+            }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="reporte">
+
+        <h2>REPORTE DE MATERIAL</h2>
+
+        <!-- Información en la parte superior -->
+        <div class="info">
+
+            <div class="info-header">
+                Información
+            </div>
+
+            <div class="info-body">
+                <div class="fila">
+                    <span class="etiqueta">Material:</span>
+                    <span class="valor">@Model.Material?.Description</span>
+                </div>
+
+                <div class="fila">
+                    <span class="etiqueta">Marca:</span>
+                    <span class="valor">@Model.Brand?.Name</span>
+                </div>
+
+                <div class="fila">
+                    <span class="etiqueta">Producto:</span>
+                    <span class="valor">@Model.Product?.Description</span>
+                </div>
+
+                <div class="fila">
+                    <span class="etiqueta">Presentación:</span>
+                    <span class="valor">@Model.Presentation?.Name</span>
+                </div>
+
+                <div class="fila">
+                    <span class="etiqueta">Unidad:</span>
+                    <span class="valor">@Model.Unit?.Name</span>
+                </div>
+
+                <div class="fila">
+                    <span class="etiqueta">Consumo:</span>
+                    <span class="valor">@Model.Consumption</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Imágenes en la parte inferior -->
+        <div class="imagenes">
+
+            <h3>Imágenes</h3>
+
+            @if (Model.Images != null && Model.Images.Any())
+            {
+                <div class="galeria">
+                    @foreach (var img in Model.Images)
+                    {
+                        <div class="img-box">
+                            <img src="@img.Path" alt="Imagen del material" />
+                        </div>
+                    }s cambios q
+                </div>
+            }
+            else
+            {
+                <div class="sin-imagenes">
+                    No hay imágenes disponibles.
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</body>
+</html>
