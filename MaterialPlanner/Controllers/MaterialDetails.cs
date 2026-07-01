@@ -2,13 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-<<<<<<< HEAD
 using Rotativa.AspNetCore;
 using Rotativa.AspNetCore.Options;
-
-=======
 using ClosedXML.Excel;
->>>>>>> origin/master
+
 
 namespace MaterialPlanner.Controllers
 {
@@ -199,7 +196,6 @@ namespace MaterialPlanner.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-       
 
         public async Task<IActionResult> ExportToExcel(DateTime? startDate, DateTime? endDate)
         {
@@ -268,6 +264,8 @@ namespace MaterialPlanner.Controllers
                 "MaterialDetails.xlsx"
             );
         }
+
+       
 
         // DROPDOWNS
         private void LoadDropdowns()
