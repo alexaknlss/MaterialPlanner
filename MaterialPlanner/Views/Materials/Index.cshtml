@@ -37,7 +37,11 @@
                     </td>
 
                     <td>
-                        @Html.DisplayFor(modelItem => item.Description)
+                        <strong>@item.Description</strong><br />
+
+                        <small class="text-muted">
+                            Created: @item.CreatedAt.ToString("dd/MM/yyyy hh:mm tt")
+                        </small>
                     </td>
 
                     <td class="text-center">
