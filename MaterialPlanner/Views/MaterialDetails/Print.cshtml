@@ -18,138 +18,92 @@
                 color: #000;
             }
 
-            /* Marco de toda la hoja */
+            /* CONTENEDOR PRINCIPAL */
             .reporte {
                 border: 3px solid #000;
                 padding: 25px;
                 min-height: 95vh;
-                display: flex;
-                flex-direction: column;
             }
 
             h2 {
                 text-align: center;
-                margin-top: 0;
-                margin-bottom: 35px;
+                margin-bottom: 25px;
             }
 
-            /* Caja de información - Ahora en la parte superior */
+            /* ===================== */
+            /* INFO BOX (ARRIBA) */
+            /* ===================== */
             .info {
                 border: 2px solid #000;
-                margin-bottom: 40px;
-                flex-shrink: 0;
+                border-radius: 20px;
+                overflow: hidden;
+                margin-bottom: 25px;
             }
 
             .info-header {
                 text-align: center;
-                font-size: 18px;
                 font-weight: bold;
                 padding: 12px;
                 border-bottom: 2px solid #000;
-                background-color: #f5f5f5;
+                background: #f2f2f2;
             }
 
             .info-body {
-                padding: 20px 30px;
+                padding: 15px 20px;
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                gap: 10px 30px;
+                gap: 10px 20px;
             }
 
-            .fila {
-                margin: 8px 0;
+            .info-item {
                 display: flex;
-                align-items: baseline;
+                gap: 5px;
             }
 
-            .etiqueta {
-                display: inline-block;
-                width: 120px;
+            .label {
                 font-weight: bold;
-                flex-shrink: 0;
             }
 
-            .valor {
-                word-break: break-word;
-            }
-
-            /* Área de imágenes - Ahora en la parte inferior */
+            /* ===================== */
+            /* IMAGENES (ABAJO) */
+            /* ===================== */
             .imagenes {
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                min-height: 200px;
+                border: 2px solid #000;
+                border-radius: 20px;
+                padding: 15px;
             }
 
                 .imagenes h3 {
-                    margin: 0 0 20px 0;
-                    font-size: 20px;
-                    flex-shrink: 0;
+                    text-align: center;
+                    margin-bottom: 15px;
                 }
 
             .galeria {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 20px;
-                align-content: flex-start;
-                flex: 1;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
             }
 
             .img-box {
-                border: 1px solid #000;
-                padding: 5px;
-                flex: 0 0 auto;
-            }
-
-                .img-box img {
-                    width: 200px;
-                    height: 200px;
-                    object-fit: cover;
-                    display: block;
-                }
-
-            .sin-imagenes {
-                text-align: center;
-                margin-top: 40px;
-                font-style: italic;
-                font-size: 16px;
-                flex: 1;
+                border: 2px solid #000;
+                height: 220px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                background: #fafafa;
             }
-
-            /* Ajustes para impresión */
-            @@media print {
-                body {
-                    margin: 0;
-                    padding: 10px;
-                }
-
-                .reporte {
-                    border: 3px solid #000;
-                    padding: 20px;
-                    min-height: 100vh;
-                }
 
                 .img-box img {
-                    width: 180px;
-                    height: 180px;
-                }
-            }
-
-            /* Responsive para pantallas pequeñas */
-            @@media (max-width: 768px) {
-                .info-body {
-                    grid-template-columns: 1fr;
-                    padding: 15px;
+                    max-width: 100%;
+                    max-height: 100%;
+                    object-fit: contain;
                 }
 
-                .img-box img {
-                    width: 150px;
-                    height: 150px;
-                }
+            .no-image {
+                font-style: italic;
+                color: #777;
             }
+
     </style>
 
 </head>
@@ -160,67 +114,71 @@
 
         <h2>REPORTE DE MATERIAL</h2>
 
-        <!-- Información en la parte superior -->
+        <!-- ================= INFO ================= -->
         <div class="info">
 
             <div class="info-header">
-                Información
+                INFORMACIÓN
             </div>
 
             <div class="info-body">
-                <div class="fila">
-                    <span class="etiqueta">Material:</span>
-                    <span class="valor">@Model.Material?.Description</span>
+
+                <div class="info-item">
+                    <span class="label">Material:</span>
+                    <span>@Model.Material?.Description</span>
                 </div>
 
-                <div class="fila">
-                    <span class="etiqueta">Marca:</span>
-                    <span class="valor">@Model.Brand?.Name</span>
+                <div class="info-item">
+                    <span class="label">Marca:</span>
+                    <span>@Model.Brand?.Name</span>
                 </div>
 
-                <div class="fila">
-                    <span class="etiqueta">Producto:</span>
-                    <span class="valor">@Model.Product?.Description</span>
+                <div class="info-item">
+                    <span class="label">Producto:</span>
+                    <span>@Model.Product?.Description</span>
                 </div>
 
-                <div class="fila">
-                    <span class="etiqueta">Presentación:</span>
-                    <span class="valor">@Model.Presentation?.Name</span>
+                <div class="info-item">
+                    <span class="label">Presentación:</span>
+                    <span>@Model.Presentation?.Name</span>
                 </div>
 
-                <div class="fila">
-                    <span class="etiqueta">Unidad:</span>
-                    <span class="valor">@Model.Unit?.Name</span>
+                <div class="info-item">
+                    <span class="label">Unidad:</span>
+                    <span>@Model.Unit?.Name</span>
                 </div>
 
-                <div class="fila">
-                    <span class="etiqueta">Consumo:</span>
-                    <span class="valor">@Model.Consumption</span>
+                <div class="info-item">
+                    <span class="label">Consumo:</span>
+                    <span>@Model.Consumption</span>
                 </div>
+
             </div>
 
         </div>
 
-        <!-- Imágenes en la parte inferior -->
+        <!-- IMAGENES  -->
         <div class="imagenes">
 
-            <h3>Imágenes</h3>
+            <h3>IMÁGENES</h3>
 
             @if (Model.Images != null && Model.Images.Any())
             {
                 <div class="galeria">
+
                     @foreach (var img in Model.Images)
                     {
                         <div class="img-box">
-                            <img src="@img.Path" alt="Imagen del material" />
+                            <img src="@img.Path" />
                         </div>
-                    }s cambios q
+                    }
+
                 </div>
             }
             else
             {
-                <div class="sin-imagenes">
-                    No hay imágenes disponibles.
+                <div class="no-image">
+                    No hay imágenes disponibles
                 </div>
             }
 

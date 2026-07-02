@@ -85,9 +85,9 @@
 
     </div>
 
-    <!-- ===================== -->
+    
     <!-- COLUMNA DERECHA -->
-    <!-- ===================== -->
+  
     <div class="col-md-8">
 
         <div class="card shadow-sm">
@@ -171,15 +171,14 @@
         Edit
     </a>
 
-    <a asp-action="Index"
-       class="btn btn-secondary">
-        Back to List
-    </a>
-
     <a asp-action="ReportePDF"
        asp-route-id="@Model.Id"
        class="btn btn-danger">
         Generar PDF
+    </a>
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Back to List
     </a>
 
 </div>
