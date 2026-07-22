@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MaterialPlanner.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MaterialPlanner.Models;
+using X.PagedList;
+using X.PagedList.Extensions;
 
 namespace MaterialPlanner.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly MaterialPlannerContext _context;
@@ -14,9 +18,23 @@ namespace MaterialPlanner.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+   
+        public async Task<IActionResult> Index(int? page)
         {
-            return View(await _context.Products.ToListAsync());
+            var products = _context.Products.AsQueryable();
+
+           
+            //Orden
+           
+            products = products.OrderByDescending(p => p.Id);
+
+           
+            //Paginacion
+        
+            int pageSize = 10;
+            int pageNumber = page ?? 1;
+
+            return View(products.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Products/Details/5

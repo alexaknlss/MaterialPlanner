@@ -7,102 +7,34 @@
     <title>Reporte de Material</title>
 
     <style>
-            * {
-                box-sizing: border-box;
-            }
-
-            body {
-                margin: 20px;
-                font-family: Arial, Helvetica, sans-serif;
-                font-size: 14px;
-                color: #000;
-            }
-
-            /* CONTENEDOR PRINCIPAL */
-            .reporte {
-                border: 3px solid #000;
-                padding: 25px;
-                min-height: 95vh;
-            }
-
-            h2 {
-                text-align: center;
-                margin-bottom: 25px;
-            }
-
-            /* ===================== */
-            /* INFO BOX (ARRIBA) */
-            /* ===================== */
-            .info {
-                border: 2px solid #000;
-                border-radius: 20px;
-                overflow: hidden;
-                margin-bottom: 25px;
-            }
-
-            .info-header {
-                text-align: center;
-                font-weight: bold;
-                padding: 12px;
-                border-bottom: 2px solid #000;
-                background: #f2f2f2;
-            }
-
-            .info-body {
-                padding: 15px 20px;
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 10px 20px;
-            }
-
-            .info-item {
-                display: flex;
-                gap: 5px;
-            }
-
-            .label {
-                font-weight: bold;
-            }
-
-            /* ===================== */
-            /* IMAGENES (ABAJO) */
-            /* ===================== */
             .imagenes {
-                border: 2px solid #000;
-                border-radius: 20px;
-                padding: 15px;
+                width: 100%;
+                margin-top: 20px;
             }
 
-                .imagenes h3 {
-                    text-align: center;
-                    margin-bottom: 15px;
+            .tabla-imagenes {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .img-cell {
+                width: 50%;
+                padding: 10px;
+                text-align: center;
+            }
+
+                .img-cell img {
+                    width: 100%;
+                    height: 250px;
+                    object-fit: cover;
+                    border-radius: 8px;
+                    border: 1px solid #ccc;
                 }
 
-            .galeria {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
 
-            .img-box {
-                border: 2px solid #000;
-                height: 220px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: #fafafa;
-            }
 
-                .img-box img {
-                    max-width: 100%;
-                    max-height: 100%;
-                    object-fit: contain;
-                }
 
-            .no-image {
-                font-style: italic;
-                color: #777;
-            }
+
 
     </style>
 
@@ -115,44 +47,39 @@
         <h2>REPORTE DE MATERIAL</h2>
 
         <!-- ================= INFO ================= -->
-        <div class="info">
+        <div class="info-card">
 
             <div class="info-header">
-                INFORMACIÓN
+                INFORMACIÓN DEL MATERIAL
             </div>
 
             <div class="info-body">
-
-                <div class="info-item">
-                    <span class="label">Material:</span>
-                    <span>@Model.Material?.Description</span>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="label">Material</span>
+                        <span class="value">@Model.Material?.Description</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Marca</span>
+                        <span class="value">@Model.Brand?.Name</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Producto</span>
+                        <span class="value">@Model.Product?.Description</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Presentación</span>
+                        <span class="value">@Model.Presentation?.Name</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Unidad</span>
+                        <span class="value">@Model.Unit?.Name</span>
+                    </div>
+                    <div class="info-item highlight">
+                        <span class="label">Consumo</span>
+                        <span class="value">@Model.Consumption</span>
+                    </div>
                 </div>
-
-                <div class="info-item">
-                    <span class="label">Marca:</span>
-                    <span>@Model.Brand?.Name</span>
-                </div>
-
-                <div class="info-item">
-                    <span class="label">Producto:</span>
-                    <span>@Model.Product?.Description</span>
-                </div>
-
-                <div class="info-item">
-                    <span class="label">Presentación:</span>
-                    <span>@Model.Presentation?.Name</span>
-                </div>
-
-                <div class="info-item">
-                    <span class="label">Unidad:</span>
-                    <span>@Model.Unit?.Name</span>
-                </div>
-
-                <div class="info-item">
-                    <span class="label">Consumo:</span>
-                    <span>@Model.Consumption</span>
-                </div>
-
             </div>
 
         </div>
@@ -160,29 +87,42 @@
         <!-- IMAGENES  -->
         <div class="imagenes">
 
-            <h3>IMÁGENES</h3>
+    <h3>IMÁGENES</h3>
 
-            @if (Model.Images != null && Model.Images.Any())
-            {
-                <div class="galeria">
+    @if (Model.Images != null && Model.Images.Any())
+    {
+        <table class="tabla-imagenes">
 
-                    @foreach (var img in Model.Images)
+            <tr>
+                @{
+                    int count = 0;
+                }
+
+                @foreach (var img in Model.Images)
+                {
+                    if (count % 2 == 0 && count != 0)
                     {
-                        <div class="img-box">
-                            <img src="@img.Path" />
-                        </div>
+                        @:</tr><tr>
                     }
 
-                </div>
-            }
-            else
-            {
-                <div class="no-image">
-                    No hay imágenes disponibles
-                </div>
-            }
+                    <td class="img-cell">
+                        <img src="@img.Path" />
+                    </td>
 
+                    count++;
+                }
+            </tr>
+
+        </table>
+    }
+    else
+    {
+        <div class="no-image">
+            No hay imágenes disponibles
         </div>
+    }
+
+</div>
 
     </div>
 

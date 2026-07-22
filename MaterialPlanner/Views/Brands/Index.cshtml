@@ -1,4 +1,7 @@
-@model IEnumerable<MaterialPlanner.Models.Brands>
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+
+@model IPagedList<MaterialPlanner.Models.Brands>
 
 @{
     ViewData["Title"] = "Brands";
@@ -69,6 +72,57 @@
                     </tbody>
 
                 </table>
+                <div class="d-flex justify-content-center mt-4">
+
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+
+                            <!--Anterior-->
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a class="page-link"
+                                   href="@Url.Action("Index", new
+                                   {
+                                       page = Model.PageNumber - 1,
+                                       startDate = ViewBag.StartDate,
+                                       endDate = ViewBag.EndDate
+                                   })">
+                                    «
+                                </a>
+                            </li>
+
+                            <!--Numeros de pag-->
+                            @for (int i = 1; i <= Model.PageCount; i++)
+                            {
+                                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                                    <a class="page-link"
+                                       href="@Url.Action("Index", new
+                                       {
+                                           page = i,
+                                           startDate = ViewBag.StartDate,
+                                           endDate = ViewBag.EndDate
+                                       })">
+                                        @i
+                                    </a>
+                                </li>
+                            }
+
+                            <!--Siguiente-->
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a class="page-link"
+                                   href="@Url.Action("Index", new
+                                   {
+                                       page = Model.PageNumber + 1,
+                                       startDate = ViewBag.StartDate,
+                                       endDate = ViewBag.EndDate
+                                   })">
+                                    »
+                                </a>
+                            </li>
+
+                        </ul>
+                    </nav>
+
+                </div>
             </div>
 
         </div>

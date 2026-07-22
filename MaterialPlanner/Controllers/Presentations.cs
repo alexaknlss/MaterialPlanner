@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MaterialPlanner.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MaterialPlanner.Models;
+using X.PagedList;
+using X.PagedList.Extensions;
 
 namespace MaterialPlanner.Controllers
 {
@@ -14,9 +16,22 @@ namespace MaterialPlanner.Controllers
         }
 
         // GET: Presentations
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            return View(await _context.Presentations.ToListAsync());
+            var presentations = _context.Presentations.AsQueryable();
+
+            
+            //Orden
+       
+            presentations = presentations.OrderByDescending(p => p.Id);
+
+           
+            //Pagination
+           
+            int pageSize = 10;
+            int pageNumber = page ?? 1;
+
+            return View(presentations.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Presentations/Details/5

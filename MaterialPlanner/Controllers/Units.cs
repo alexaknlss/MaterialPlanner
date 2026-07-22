@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using MaterialPlanner.Models;
 
 namespace MaterialPlanner.Controllers
 {
+    [Authorize]
     public class UnitsController : Controller
     {
         private readonly MaterialPlannerContext _context;
