@@ -1,32 +1,213 @@
 @page
 @model MaterialPlanner.Areas.Identity.Pages.Account.LoginModel
+
 @{
     ViewData["Title"] = "Iniciar sesión";
+    ViewData["HideNavigation"] = true;
 }
+<div class="login-page">
+    <div class="login-card">
 
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <h2>@ViewData["Title"]</h2>
+        <div class="login-icon">
+            <i class="bi bi-person"></i>
+        </div>
+
+        <div class="text-center mb-4">
+            <h2 class="login-title">Bienvenido</h2>
+
+            <p class="login-subtitle">
+                Ingresa tus credenciales para acceder a Material Planner
+            </p>
+        </div>
+
         <form method="post">
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger small mb-3">
             </div>
-            <div class="form-group">
-                <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+            <div class="mb-3">
+                <label asp-for="Input.Email"
+                       class="form-label">
+                    Correo electrónico
+                </label>
+
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-envelope"></i>
+                    </span>
+
+                    <input asp-for="Input.Email"
+                           class="form-control"
+                           placeholder="nombre@empresa.com"
+                           autocomplete="username" />
+                </div>
+
+                <span asp-validation-for="Input.Email"
+                      class="text-danger small">
+                </span>
             </div>
-            <div class="form-group form-check">
-                <input asp-for="Input.RememberMe" class="form-check-input" />
-                <label asp-for="Input.RememberMe" class="form-check-label"></label>
+
+            <div class="mb-3">
+                <label asp-for="Input.Password"
+                       class="form-label">
+                    Contraseña
+                </label>
+
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-lock"></i>
+                    </span>
+
+                    <input asp-for="Input.Password"
+                           class="form-control"
+                           placeholder="Ingresa tu contraseña"
+                           autocomplete="current-password" />
+                </div>
+
+                <span asp-validation-for="Input.Password"
+                      class="text-danger small">
+                </span>
             </div>
-            <button type="submit" class="btn btn-primary">Entrar</button>
+
+            <div class="form-check mb-4">
+                <input asp-for="Input.RememberMe"
+                       class="form-check-input" />
+
+                <label asp-for="Input.RememberMe"
+                       class="form-check-label">
+                    Recordarme
+                </label>
+            </div>
+
+            <button type="submit"
+                    class="btn btn-primary w-100 login-button">
+                <i class="bi bi-box-arrow-in-right me-2"></i>
+                Iniciar sesión
+            </button>
+
         </form>
-        <p class="mt-3">¿No tienes cuenta? <a asp-page="./Register">Regístrate</a></p>
+
+        <div class="register-section">
+            <span>¿Eres un usuario nuevo?</span>
+
+            <a asp-page="./Register"
+               class="register-link">
+                Regístrate aquí
+            </a>
+        </div>
+
     </div>
 </div>
+
+<style>
+    .login-page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 30px;
+        background: #F7F4F0;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 430px;
+        padding: 36px;
+        background-color: #ffffff;
+        border-radius: 18px;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
+    }
+
+    .login-icon {
+        width: 54px;
+        height: 54px;
+        margin: 0 auto 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #7a8491;
+        font-size: 42px;
+    }
+
+    .login-title {
+        font-family: "Inter",sans-serif;
+        font-size: 31px;
+        font-weight: 500;
+        color: #27374D;
+    }
+
+    .login-subtitle {
+        margin-bottom: 0;
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .form-label {
+        color: #343a40;
+        font-weight: 600;
+    }
+
+    .input-group-text {
+        background-color: #f4f5f7;
+        border-right: none;
+        color: #6c757d;
+    }
+
+    .input-group .form-control {
+        padding-top: 11px;
+        padding-bottom: 11px;
+        border-left: none;
+    }
+
+        .input-group .form-control:focus {
+            border-color: #ced4da;
+            box-shadow: none;
+        }
+
+    .login-button {
+        padding-top: 11px;
+        padding-bottom: 11px;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+    .register-section {
+        margin-top: 24px;
+        padding-top: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+        border-top: 1px solid #eceff2;
+        color: #6c757d;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .register-link {
+        color: #0d6efd;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+        .register-link:hover {
+            text-decoration: underline;
+        }
+
+    @@media (max-width: 576px) {
+        .login-card {
+            padding: 28px 22px;
+        }
+
+        .login-icon {
+            width: 56px;
+            height: 56px;
+            font-size: 26px;
+        }
+    }
+</style>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

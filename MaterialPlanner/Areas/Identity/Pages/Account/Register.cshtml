@@ -1,34 +1,129 @@
 @page
 @model MaterialPlanner.Areas.Identity.Pages.Account.RegisterModel
+
 @{
     ViewData["Title"] = "Registro";
+    ViewData["HideNavigation"] = true;
 }
 
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <h2>@ViewData["Title"]</h2>
+
+<div class="register-page">
+
+    <div class="register-card">
+
+        <div class="register-icon">
+            <i class="bi bi-person-plus"></i>
+        </div>
+
+        <div class="text-center mb-4">
+            <h2 class="register-title">Crear cuenta</h2>
+
+            <p class="register-subtitle">
+                Completa tus datos para registrarte
+            </p>
+        </div>
+
         <form method="post">
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger small mb-3">
             </div>
-            <div class="form-group">
-                <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+            <div class="mb-3">
+                <label asp-for="Input.Email" class="form-label"></label>
+                <input asp-for="Input.Email"
+                       class="form-control"
+                       autocomplete="username" />
+                <span asp-validation-for="Input.Email"
+                      class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Input.ConfirmPassword"></label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+
+            <div class="mb-3">
+                <label asp-for="Input.Password" class="form-label"></label>
+                <input asp-for="Input.Password"
+                       class="form-control"
+                       autocomplete="new-password" />
+                <span asp-validation-for="Input.Password"
+                      class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Crear cuenta</button>
+
+            <div class="mb-4">
+                <label asp-for="Input.ConfirmPassword" class="form-label"></label>
+                <input asp-for="Input.ConfirmPassword"
+                       class="form-control"
+                       autocomplete="new-password" />
+                <span asp-validation-for="Input.ConfirmPassword"
+                      class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                Crear cuenta
+            </button>
+
+            <div class="text-center mt-4">
+                ¿Ya tienes una cuenta?
+                <a asp-page="./Login">Inicia sesión</a>
+            </div>
+
         </form>
-        <p class="mt-3">¿Tienes una cuenta? <a asp-page="./Login">Inicia sesión</a></p>
+
     </div>
+
 </div>
 
+<style>
+    .register-page {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #fff;
+        padding: 30px 15px;
+    }
+
+    .register-card {
+        width: 100%;
+        max-width: 480px;
+        background: #fff;
+        border-radius: 18px;
+        padding: 40px;
+        border: 1px solid #e8e8e8;
+        box-shadow: 0 12px 35px rgba(0,0,0,.08);
+    }
+
+    .register-icon {
+        width: 58px;
+        height: 58px;
+        margin: 0 auto 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #f3f4f6;
+        color: #6b7280;
+        font-size: 28px;
+    }
+
+    .register-title {
+        font-size: 31px;
+        font-weight: 600;
+        color: #27374D;
+    }
+
+    .register-subtitle {
+        color: #7b8591;
+        font-size: 15px;
+    }
+
+    .register-card .form-control {
+        height: 46px;
+        border-radius: 10px;
+    }
+
+        .register-card .form-control:focus {
+            box-shadow: 0 0 0 .2rem rgba(39,55,77,.15);
+        }
+</style>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
