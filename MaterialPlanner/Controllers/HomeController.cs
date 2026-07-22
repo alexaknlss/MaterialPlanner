@@ -8,7 +8,12 @@ namespace MaterialPlanner.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            if (!User.Identity!.IsAuthenticated)
+            {
+                return Redirect("/Identity/Account/Login");
+            }
+
+            return RedirectToAction("Index", "MaterialDetails");
         }
 
         public IActionResult Privacy()

@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MaterialPlanner.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MaterialPlanner.Models;
+using X.PagedList;
+using X.PagedList.Extensions;
 
 namespace MaterialPlanner.Controllers
 {
+    [Authorize]
     public class BrandsController : Controller
     {
         private readonly MaterialPlannerContext _context;
@@ -14,10 +18,13 @@ namespace MaterialPlanner.Controllers
         }
 
         // GET: Brands
-        public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate)
+        public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate, int? page)
         {
             var brands = _context.Brands.AsQueryable();
 
+            
+            //filtro por fecha
+           
             if (startDate.HasValue)
             {
                 brands = brands.Where(b => b.CreatedAt.Date >= startDate.Value.Date);
@@ -31,7 +38,17 @@ namespace MaterialPlanner.Controllers
             ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
             ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
 
-            return View(await brands.ToListAsync());
+           
+            //paginacion
+           
+            int pageSize = 10;
+            int pageNumber = page ?? 1;
+
+            //ordenar antes de paginar
+            brands = brands.OrderByDescending(b => b.CreatedAt);
+
+            //paginado
+            return View(brands.ToPagedList(pageNumber, pageSize));
         }
 
 

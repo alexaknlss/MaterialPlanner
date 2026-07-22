@@ -1,10 +1,12 @@
-﻿using MaterialPlanner.Models;
+﻿using ClosedXML.Excel;
+using MaterialPlanner.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Rotativa.AspNetCore;
 using Rotativa.AspNetCore.Options;
-using ClosedXML.Excel;
+using X.PagedList;
+using X.PagedList.Extensions;
 
 
 namespace MaterialPlanner.Controllers
@@ -21,8 +23,7 @@ namespace MaterialPlanner.Controllers
         }
 
         // GET: MaterialDetails
-
-        public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate)
+        public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate, int? page)
         {
             var materialDetails = _context.MaterialDetails
                 .Include(m => m.Material)
@@ -33,6 +34,9 @@ namespace MaterialPlanner.Controllers
                 .Include(m => m.Unit)
                 .AsQueryable();
 
+          
+            // filtro por fecha
+            
             if (startDate.HasValue)
             {
                 materialDetails = materialDetails.Where(m => m.CreatedAt.Date >= startDate.Value.Date);
@@ -43,10 +47,29 @@ namespace MaterialPlanner.Controllers
                 materialDetails = materialDetails.Where(m => m.CreatedAt.Date <= endDate.Value.Date);
             }
 
+            // Se conservan las fechas para que la vista no pierda los filtros
             ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
             ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
 
-            return View(await materialDetails.ToListAsync());
+           
+            //Paginacion
+            
+            //cantidad de registros que se mostrarán por pagina
+           
+            int pageSize = 10;
+
+            
+            //se mostrará la primera.
+            int pageNumber = page ?? 1;
+
+            
+            //Ordenado de datos
+            
+            materialDetails = materialDetails
+                .OrderByDescending(m => m.CreatedAt);
+
+            //devuelve los datos paginados a la vista
+            return View(materialDetails.ToPagedList(pageNumber, pageSize));
         }
 
 

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -90,11 +91,7 @@
                 <span>Material Details</span>
             </a>
 
-            <a asp-controller="Images" asp-action="Index" class="sidebar-link">
-                <i class="bi bi-image"></i>
-                <span>Images</span>
-            </a>
-
+            
             <div class="sidebar-section">Management</div>
 
             <a asp-controller="Brands" asp-action="Index" class="sidebar-link">
@@ -116,8 +113,25 @@
                 <i class="bi bi-card-list"></i>
                 <span>Presentations</span>
             </a>
+            <!-- En esta parte esta el Navba-->
 
         </div>
+        <div class="sidebar-section">Account</div>
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="sidebar-link">
+                <i class="bi bi-person-circle"></i>
+                <span>@User.Identity.Name</span>
+            </div>
+
+            <form asp-area="Identity" asp-page="/Account/Logout" method="post">
+                <button type="submit" class="sidebar-link border-0 bg-transparent w-100 text-start">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Cerrar sesión</span>
+                </button>
+            </form>
+        }
     </div>
 
     <div class="container-fluid pb-3 pt-5">
