@@ -1,5 +1,4 @@
-﻿﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -22,17 +21,25 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
+@{
+    bool hideNavigation =
+        ViewData["HideNavigation"] as bool? ?? false;
+}
+
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top p-0">
-        <div class="container-fluid" style="background-color: rgb(224,224,224);">
+    @if (!hideNavigation)
+    {
+        <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top p-0">
+            <div class="container-fluid" style="background-color: rgb(224,224,224);">
 
-            <button class="btn btn-outline-black"
-                    type="button"
-                    data-bs-toggle="offcanvas"
-                    data-bs-target="#sidebarMenu"
-                    aria-controls="sidebarMenu">
+                <button class="btn btn-outline-black"
+                        type="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#sidebarMenu"
+                        aria-controls="sidebarMenu">
 
+<<<<<<< HEAD
                 <img src="~/images/Imajen2.png"
                      alt="Logo"
                      style="width:60px; height:60px;">
@@ -133,18 +140,127 @@
                 <button type="submit" class="sidebar-link border-0 bg-transparent w-100 text-start">
                     <i class="bi bi-box-arrow-right"></i>
                     <span>Cerrar sesión</span>
+=======
+                    <img src="~/images/Imajen2.png"
+                         alt="Logo"
+                         style="width:60px; height:60px;">
+>>>>>>> master
                 </button>
-            </form>
-        }
-    </div>
 
-    <div class="container-fluid pb-3 pt-5">
-        <main role="main" class="pb-3" style="padding-top:45px;">
+                <a class="navbar-brand ms-2"
+                   asp-controller="Home"
+                   asp-action="Index">
+                    MaterialPlanner
+                </a>
+
+            </div>
+        </nav>
+
+        <div class="offcanvas offcanvas-start modern-sidebar"
+             tabindex="-1"
+             id="sidebarMenu"
+             aria-labelledby="sidebarMenuLabel">
+
+            <div class="offcanvas-header sidebar-header">
+
+                <div class="sidebar-brand">
+
+                    <div class="brand-icon">
+                        <img src="~/images/Imajen2.png"
+                             alt="Logo"
+                             style="width:60px; height:60px;">
+                    </div>
+
+                    <div>
+                        <h5 id="sidebarMenuLabel">MaterialPlanner</h5>
+                        <small>Dashboard</small>
+                    </div>
+
+                </div>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="offcanvas"
+                        aria-label="Close">
+                </button>
+
+            </div>
+
+            <div class="offcanvas-body sidebar-body">
+
+                <div class="sidebar-section">Main</div>
+
+                <a asp-controller="Home" asp-action="Index" class="sidebar-link">
+                    <i class="bi bi-grid"></i>
+                    <span>Inicio</span>
+                </a>
+
+                <a asp-controller="MaterialDetails" asp-action="Index" class="sidebar-link">
+                    <i class="bi bi-layers"></i>
+                    <span>Material Details</span>
+                </a>
+
+                <div class="sidebar-section">Management</div>
+
+                <a asp-controller="Brands" asp-action="Index" class="sidebar-link">
+                    <i class="bi bi-tags"></i>
+                    <span>Brands</span>
+                </a>
+
+                <a asp-controller="Products" asp-action="Index" class="sidebar-link">
+                    <i class="bi bi-bag"></i>
+                    <span>Products</span>
+                </a>
+
+                <a asp-controller="Materials" asp-action="Index" class="sidebar-link">
+                    <i class="bi bi-box"></i>
+                    <span>Materials</span>
+                </a>
+
+                <a asp-controller="Presentations" asp-action="Index" class="sidebar-link">
+                    <i class="bi bi-card-list"></i>
+                    <span>Presentations</span>
+                </a>
+
+            </div>
+
+            <div class="sidebar-section">Account</div>
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <div class="sidebar-link">
+                    <i class="bi bi-person-circle"></i>
+                    <span>@User.Identity.Name</span>
+                </div>
+
+                <form asp-area="Identity"
+                      asp-page="/Account/Logout"
+                      method="post">
+
+                    <button type="submit"
+                            class="sidebar-link border-0 bg-transparent w-100 text-start">
+
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Cerrar sesión</span>
+                    </button>
+                </form>
+            }
+
+        </div>
+    }
+
+    <div class="@(hideNavigation
+                             ? "container-fluid p-0"
+                             : "container-fluid pb-3 pt-5")">
+
+        <main role="main"
+              class="@(hideNavigation ? "" : "pb-3")"
+              style="@(hideNavigation ? "" : "padding-top:45px;")">
+
             @RenderBody()
+
         </main>
     </div>
-
-    <!-- Scripts -->
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
