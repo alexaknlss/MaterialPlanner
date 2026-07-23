@@ -242,7 +242,9 @@ namespace MaterialPlanner.Controllers
                     .Where(m => m.CreatedAt.Date <= endDate.Value.Date);
             }
 
-            var materialDetails = await materialDetailsQuery.ToListAsync();
+            var materialDetails = await materialDetailsQuery
+    .OrderByDescending(m => m.CreatedAt)
+    .ToListAsync();
 
             using var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Material Details");
