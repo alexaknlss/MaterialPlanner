@@ -56,28 +56,25 @@
             <div class="info-body">
                 <div class="info-grid">
                     <div class="info-item">
-                        <span class="label">Material</span>
+                        <span class="label">Material:</span>
                         <span class="value">@Model.Material?.Description</span>
                     </div>
                     <div class="info-item">
-                        <span class="label">Marca</span>
+                        <span class="label">Marca:</span>
                         <span class="value">@Model.Brand?.Name</span>
                     </div>
                     <div class="info-item">
-                        <span class="label">Producto</span>
+                        <span class="label">Producto:</span>
                         <span class="value">@Model.Product?.Description</span>
                     </div>
                     <div class="info-item">
-                        <span class="label">Presentación</span>
+                        <span class="label">Presentación:</span>
                         <span class="value">@Model.Presentation?.Name</span>
                     </div>
-                    <div class="info-item">
-                        <span class="label">Unidad</span>
-                        <span class="value">@Model.Unit?.Name</span>
-                    </div>
+                    
                     <div class="info-item highlight">
-                        <span class="label">Consumo</span>
-                        <span class="value">@Model.Consumption</span>
+                        <span class="label">Consumo:</span>
+                        <span class="value">@Model.Consumption (@Model.Unit?.Name)</span>
                     </div>
                 </div>
             </div>

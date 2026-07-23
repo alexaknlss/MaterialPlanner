@@ -38,11 +38,14 @@
                      style="width:60px; height:60px;">
             </button>
 
-            <a class="navbar-brand ms-2"
-               asp-controller="Home"
-               asp-action="Index">
-                MaterialPlanner
-            </a>
+           
+           <!--  <div class="sidebar-link">
+                <i class="bi bi-person-circle"></i>
+                <span>
+                    @(User.Identity?.Name?.Split('@').FirstOrDefault())
+                </span>
+            </div>
+            -->
 
         </div>
     </nav>
@@ -84,6 +87,7 @@
             <a asp-controller="Home" asp-action="Index" class="sidebar-link">
                 <i class="bi bi-grid"></i>
                 <span>Inicio</span>
+                <!--En esta parte ira el dashboard para admins-->
             </a>
 
             <a asp-controller="MaterialDetails" asp-action="Index" class="sidebar-link">

@@ -52,6 +52,12 @@ namespace MaterialPlanner.Controllers
             // 🔥 limpiar validaciones problemáticas del modelo
             ModelState.Remove("MaterialDetails");
             ModelState.Remove("Path");
+            ModelState.Remove("Description");
+
+            if (string.IsNullOrWhiteSpace(image.Description))
+            {
+                image.Description = "Sin descripción";
+            }
 
             if (file == null || file.Length == 0)
             {
@@ -60,6 +66,14 @@ namespace MaterialPlanner.Controllers
 
             if (!ModelState.IsValid)
             {
+                foreach (var item in ModelState)
+                {
+                    foreach (var error in item.Value.Errors)
+                    {
+                        Console.WriteLine($"Campo: {item.Key} - Error: {error.ErrorMessage}");
+                    }
+                }
+
                 LoadDropdowns();
                 return View(image);
             }
@@ -89,7 +103,11 @@ namespace MaterialPlanner.Controllers
             _context.Images.Add(image);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Details", "MaterialDetails", new { id = image.MaterialDetailsId });
+            return RedirectToAction(
+                "Details",
+                "MaterialDetails",
+                new { id = image.MaterialDetailsId }
+            );
         }
 
         // GET: Edit
