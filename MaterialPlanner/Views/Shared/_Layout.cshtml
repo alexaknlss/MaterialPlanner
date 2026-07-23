@@ -39,9 +39,112 @@
                         data-bs-target="#sidebarMenu"
                         aria-controls="sidebarMenu">
 
+<<<<<<< HEAD
+                <img src="~/images/Imajen2.png"
+                     alt="Logo"
+                     style="width:60px; height:60px;">
+            </button>
+
+           
+           <!--  <div class="sidebar-link">
+                <i class="bi bi-person-circle"></i>
+                <span>
+                    @(User.Identity?.Name?.Split('@').FirstOrDefault())
+                </span>
+            </div>
+            -->
+
+        </div>
+    </nav>
+
+    <div class="offcanvas offcanvas-start modern-sidebar"
+         tabindex="-1"
+         id="sidebarMenu"
+         aria-labelledby="sidebarMenuLabel">
+
+        <div class="offcanvas-header sidebar-header">
+
+            <div class="sidebar-brand">
+
+                <div class="brand-icon">
                     <img src="~/images/Imajen2.png"
                          alt="Logo"
                          style="width:60px; height:60px;">
+                </div>
+
+                <div>
+                    <h5 id="sidebarMenuLabel">MaterialPlanner</h5>
+                    <small>Dashboard</small>
+                </div>
+
+            </div>
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="offcanvas"
+                    aria-label="Close">
+            </button>
+
+        </div>
+
+        <div class="offcanvas-body sidebar-body">
+
+            <div class="sidebar-section">Main</div>
+
+            <a asp-controller="Home" asp-action="Index" class="sidebar-link">
+                <i class="bi bi-grid"></i>
+                <span>Inicio</span>
+                <!--En esta parte ira el dashboard para admins-->
+            </a>
+
+            <a asp-controller="MaterialDetails" asp-action="Index" class="sidebar-link">
+                <i class="bi bi-layers"></i>
+                <span>Material Details</span>
+            </a>
+
+            
+            <div class="sidebar-section">Management</div>
+
+            <a asp-controller="Brands" asp-action="Index" class="sidebar-link">
+                <i class="bi bi-tags"></i>
+                <span>Brands</span>
+            </a>
+
+            <a asp-controller="Products" asp-action="Index" class="sidebar-link">
+                <i class="bi bi-bag"></i>
+                <span>Products</span>
+            </a>
+
+            <a asp-controller="Materials" asp-action="Index" class="sidebar-link">
+                <i class="bi bi-box"></i>
+                <span>Materials</span>
+            </a>
+
+            <a asp-controller="Presentations" asp-action="Index" class="sidebar-link">
+                <i class="bi bi-card-list"></i>
+                <span>Presentations</span>
+            </a>
+            <!-- En esta parte esta el Navba-->
+
+        </div>
+        <div class="sidebar-section">Account</div>
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="sidebar-link">
+                <i class="bi bi-person-circle"></i>
+                <span>@User.Identity.Name</span>
+            </div>
+
+            <form asp-area="Identity" asp-page="/Account/Logout" method="post">
+                <button type="submit" class="sidebar-link border-0 bg-transparent w-100 text-start">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Cerrar sesión</span>
+=======
+                    <img src="~/images/Imajen2.png"
+                         alt="Logo"
+                         style="width:60px; height:60px;">
+>>>>>>> master
                 </button>
 
                 <a class="navbar-brand ms-2"
